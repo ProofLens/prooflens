@@ -1,8 +1,4 @@
+# netlify.toml (repo root)
 [build]
   command = ""
-  publish = "."   # change to "site" if your index.html is in /site
-
-[[headers]]
-  for = "/*"
-  [headers.values]
-    X-Content-Type-Options = "nosniff"
+  publish = "."

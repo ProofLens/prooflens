@@ -16,11 +16,13 @@
 
 <div class="card">
   <h3>Join the pilot waitlist</h3>
-  <form name="waitlist" method="POST" data-netlify="true">
+  <form name="waitlist" method="POST" data-netlify="true" action="/success.html">
     <input type="hidden" name="form-name" value="waitlist">
-    <input name="email" type="email" placeholder="you@depaul.edu" required>
+    <label>Email<br>
+        <input name="email" type="email" required>
+    </label>
     <button type="submit">Notify me</button>
-  </form>
+    </form>
 </div>
 
 <p><a href="/blog/c2pa-in-10-minutes.md">C2PA in 10 minutes (for students)</a></p>
