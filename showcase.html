@@ -1,22 +1,31 @@
 <!doctype html><html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Showcase — ProofLens</title>
-<style>
-body{font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;max-width:980px;margin:0 auto;padding:32px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
-.card{border:1px solid #e5e7eb;border-radius:14px;padding:14px}
-small{color:#475569}
-</style></head><body>
-<h1>Showcase</h1>
-<p>Real sites using the <strong>CR</strong> badge. Click any card to view the live page.</p>
-<div class="grid">
-  <!-- Add real pilots here -->
-  <!-- Example card -->
-  <!-- <a class="card" href="https://example.com/article" target="_blank" rel="noopener">
-    <strong>DePaul Student Media</strong>
-    <div><small>Front page photo — CR: pass</small></div>
-  </a> -->
-</div>
-<p><a href="/">← Home</a></p>
+<link rel="icon" href="/assets/favicon.svg">
+<link rel="stylesheet" href="/assets/styles.css">
+</head><body>
+<header class="header"><div class="container nav">
+  <a class="brand" href="/"><svg viewBox="0 0 96 96"><rect width="96" height="96" rx="18" fill="#0f1426"/><circle cx="48" cy="48" r="20" fill="#6ea8ff" opacity=".25"/></svg><strong>ProofLens</strong></a>
+  <nav class="menu"><a href="/demo-embed.html">Demo</a><a href="/embed.html">Embed</a><a href="/signer.html">Signer</a><a href="/showcase.html">Showcase</a><a href="/pricing.html">Pricing</a></nav>
+</div></header>
+
+<main class="container">
+  <h1 class="title">Showcase</h1>
+  <p class="lead">Real sites using the <strong>CR</strong> badge. Click a card to view.</p>
+  <div class="grid">
+    <!-- Add real pilots as you get them -->
+    <!-- Example: 
+    <a class="card" href="https://example.com/story" target="_blank" rel="noopener">
+      <img src="/assets/sample.jpg" alt="">
+      <div class="p">
+        <strong>DePaul Student Media</strong>
+        <div class="muted small">Front page photo — pass:true</div>
+      </div>
+    </a>
+    -->
+  </div>
+</main>
+
+<footer class="footer"><div class="container footer-inner"><div>© ProofLens</div></div></footer>
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "0e6b1abf18e948e2a934cf8b67476294"}'></script>
 </body></html>

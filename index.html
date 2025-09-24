@@ -1,42 +1,115 @@
-<!doctype html><html lang="en"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ProofLens</title>
-<style>
-  body{font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;margin:0;padding:40px;max-width:880px}
-  h1{font-size:42px;margin:0 0 12px}
-  p.lead{font-size:18px;color:#334}
-  .card{padding:20px;border:1px solid #e5e7eb;border-radius:16px;box-shadow:0 6px 18px rgba(0,0,0,.05);margin:18px 0}
-  form input{padding:10px;font-size:16px;border:1px solid #cbd5e1;border-radius:10px;width:260px}
-  form button{padding:10px 16px;font-size:16px;border:0;border-radius:10px;background:#111;color:#fff}
-  a{color:#0a66c2}
-</style>
-</head><body>
-<h1>ProofLens</h1>
-<p class="lead">Open-source Content Credentials for students and creators. Sign images, show a trusted <strong>CR</strong> badge, and verify bytes match.</p>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ProofLens — Content Credentials in 10 minutes</title>
+  <meta name="description" content="Add a tiny CR badge to any image. Click it to see the creator and verify the file hasn't been altered. Two lines of code.">
+  <link rel="icon" href="/assets/favicon.svg">
+  <link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+  <header class="header">
+    <div class="container nav">
+      <a class="brand" href="/">
+        <svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="96" height="96" rx="18" fill="#0f1426"/><circle cx="48" cy="48" r="20" fill="#6ea8ff" opacity=".25"/><path d="M32 50l10 10 20-20" stroke="#6ea8ff" stroke-width="6" stroke-linecap="round"/></svg>
+        <strong>ProofLens</strong>
+      </a>
+      <nav class="menu">
+        <a href="/demo-embed.html">Demo</a>
+        <a href="/embed.html">Embed</a>
+        <a href="/signer.html">Signer</a>
+        <a href="/showcase.html">Showcase</a>
+        <a href="/pricing.html">Pricing</a>
+      </nav>
+    </div>
+  </header>
 
-<div class="card">
-  <h3>Join the pilot waitlist</h3>
-  <form name="waitlist" method="POST" data-netlify="true" action="/success.html">
-    <input type="hidden" name="form-name" value="waitlist">
-    <p><input name="email" type="email" placeholder="you@depaul.edu" required></p>
-    <p>
-      <select name="role">
-        <option value="">I am…</option>
-        <option>Student journalist</option>
-        <option>Photographer</option>
-        <option>Club officer</option>
-        <option>Faculty/Staff</option>
-        <option>Other</option>
-      </select>
-    </p>
-    <p><input name="org" placeholder="Organization (optional)"></p>
-    <button type="submit">Notify me</button>
-  </form>
+  <main class="container">
+    <section class="hero">
+      <div>
+        <span class="badge">Open-source • Student-friendly</span>
+        <h1 class="title">Content Credentials in 10 minutes</h1>
+        <p class="lead">Add a tiny <strong>CR</strong> badge to any image. Click it to see the <strong>creator</strong> and verify the file <strong>hasn’t been altered</strong>. Paste two lines of code.</p>
+        <div class="cta-row">
+          <a class="btn" href="/embed.html">Get the snippet</a>
+          <a class="btn btn-ghost" href="/signer.html">Create a manifest</a>
+          <a class="btn btn-ghost" href="/demo-embed.html">Live demo</a>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>What you paste</h3>
+        <pre><code>&lt;script src="https://prooflens.netlify.app/assets/prooflens-verify.min.js?v=1"&gt;&lt;/script&gt;
+&lt;img src="/path/image.jpg" data-manifest-url="/path/image.jpg.manifest.json" alt=""&gt;</code></pre>
+        <p class="small muted">Readers click <span class="kbd">CR</span> to see the creator and a <em>pass:true</em> integrity check.</p>
+      </div>
+    </section>
 
-</div>
+    <section class="panel">
+      <h3>Why ProofLens</h3>
+      <div class="grid">
+        <div class="card"><div class="p">
+          <strong>Visible authorship</strong>
+          <p class="muted">Credit your creators on every image, forever.</p>
+        </div></div>
+        <div class="card"><div class="p">
+          <strong>Integrity you can click</strong>
+          <p class="muted">We hash the bytes. If the file changes, the check fails.</p>
+        </div></div>
+        <div class="card"><div class="p">
+          <strong>No lock-in</strong>
+          <p class="muted">Open manifest format. Host it anywhere. No account required.</p>
+        </div></div>
+      </div>
+    </section>
 
-<p><a href="/blog/c2pa-in-10-minutes.md">C2PA in 10 minutes (for students)</a></p>
-<p><small>GitHub: <a href="https://github.com/prooflens">prooflens</a></small></p>
-<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "0e6b1abf18e948e2a934cf8b67476294"}'></script>
-<script src="https://prooflens.netlify.app/assets/prooflens-verify.min.js?v=1"></script>
-</body></html>
+    <section class="panel">
+      <h3>Get started</h3>
+      <ol>
+        <li>Make a manifest for your image (<a href="/signer.html">client signer</a>).</li>
+        <li>Host <code>image.jpg</code> and <code>image.jpg.manifest.json</code> together.</li>
+        <li>Paste the two-line snippet into your page (<a href="/embed.html">embed tool</a>).</li>
+      </ol>
+    </section>
+
+    <section class="panel">
+      <h3>Join the pilot waitlist</h3>
+      <form name="waitlist" method="POST" data-netlify="true" action="/success.html">
+        <input type="hidden" name="form-name" value="waitlist">
+        <label>Email</label>
+        <input name="email" type="email" placeholder="you@campus.edu" required style="width:100%">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px">
+          <div>
+            <label>Your role</label>
+            <select name="role" style="width:100%">
+              <option value="">Select</option>
+              <option>Student journalist</option>
+              <option>Photographer</option>
+              <option>Club officer</option>
+              <option>Faculty/Staff</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div>
+            <label>Organization (optional)</label>
+            <input name="org" placeholder="DePaul Student Media" style="width:100%">
+          </div>
+        </div>
+        <div class="spaced">
+          <button class="btn" type="submit">Notify me</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div>© ProofLens</div>
+      <div><a class="menu" href="/pilot-guide.md">Pilot guide</a></div>
+    </div>
+  </footer>
+
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "0e6b1abf18e948e2a934cf8b67476294"}'></script>
+  <script src="https://prooflens.netlify.app/assets/prooflens-verify.min.js?v=1"></script>
+</body>
+</html>

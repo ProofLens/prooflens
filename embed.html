@@ -1,31 +1,38 @@
 <!doctype html><html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Embed — ProofLens</title>
-<style>
-body{font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;max-width:880px;margin:0 auto;padding:32px}
-input,button,textarea{font-size:16px;padding:10px;border:1px solid #cbd5e1;border-radius:8px}
-textarea{width:100%;height:140px}
-label{display:block;margin:8px 0 4px}
-</style></head><body>
-<img src="/assets/your-photo.jpg" data-manifest-url="/assets/your-photo.jpg.manifest.json" alt="">
-<h1>Embed the CR badge</h1>
-<p>Paste your image URL and the manifest URL. Copy this snippet into your page.</p>
-<label>Image URL</label>
-<input id="img" placeholder="https://yoursite.com/images/photo.jpg" style="width:100%">
-<label>Manifest URL</label>
-<input id="man" placeholder="https://yoursite.com/images/photo.jpg.manifest.json" style="width:100%">
-<p><button onclick="gen()">Generate code</button></p>
-<h3>Your snippet</h3>
-<textarea id="out" readonly></textarea>
+<link rel="icon" href="/assets/favicon.svg">
+<link rel="stylesheet" href="/assets/styles.css">
+</head><body>
+<header class="header"><div class="container nav">
+  <a class="brand" href="/"><svg viewBox="0 0 96 96"><rect width="96" height="96" rx="18" fill="#0f1426"/><circle cx="48" cy="48" r="20" fill="#6ea8ff" opacity=".25"/></svg><strong>ProofLens</strong></a>
+  <nav class="menu"><a href="/demo-embed.html">Demo</a><a href="/embed.html">Embed</a><a href="/signer.html">Signer</a><a href="/showcase.html">Showcase</a><a href="/pricing.html">Pricing</a></nav>
+</div></header>
+
+<main class="container">
+  <div class="panel">
+    <h1 class="title">Embed the CR badge</h1>
+    <p class="lead">Paste your image URL and manifest URL. Copy the snippet below into your page.</p>
+    <label>Image URL</label>
+    <input id="img" placeholder="https://yoursite.com/images/photo.jpg" style="width:100%">
+    <label>Manifest URL</label>
+    <input id="man" placeholder="https://yoursite.com/images/photo.jpg.manifest.json" style="width:100%">
+    <div class="spaced"><button class="btn" onclick="gen()">Generate code</button></div>
+    <h3>Your snippet</h3>
+    <pre id="out"></pre>
+  </div>
+</main>
+
+<footer class="footer"><div class="container footer-inner"><div>© ProofLens</div></div></footer>
+
 <script>
 function gen(){
   const img=document.getElementById('img').value.trim();
   const man=document.getElementById('man').value.trim();
   const s=`<script src="https://prooflens.netlify.app/assets/prooflens-verify.min.js?v=1"><\/script>
 <img src="${img}" data-manifest-url="${man}" alt="">`;
-  document.getElementById('out').value=s;
+  document.getElementById('out').textContent=s;
 }
 </script>
-<p><a href="/">← Home</a></p>
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "0e6b1abf18e948e2a934cf8b67476294"}'></script>
 </body></html>

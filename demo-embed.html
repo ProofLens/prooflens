@@ -1,13 +1,25 @@
 <!doctype html><html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ProofLens Demo Embed</title>
-<style>body{font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;max-width:880px;margin:0 auto;padding:32px}</style>
+<title>Demo — ProofLens</title>
+<link rel="icon" href="/assets/favicon.svg">
+<link rel="stylesheet" href="/assets/styles.css">
 </head><body>
-<h1>ProofLens Demo Embed</h1>
+<header class="header"><div class="container nav">
+  <a class="brand" href="/"><svg viewBox="0 0 96 96"><rect width="96" height="96" rx="18" fill="#0f1426"/><circle cx="48" cy="48" r="20" fill="#6ea8ff" opacity=".25"/></svg><strong>ProofLens</strong></a>
+  <nav class="menu"><a href="/demo-embed.html">Demo</a><a href="/embed.html">Embed</a><a href="/signer.html">Signer</a><a href="/showcase.html">Showcase</a><a href="/pricing.html">Pricing</a></nav>
+</div></header>
 
-<!-- PASTE THE OFFICIAL EMBED RIGHT HERE -->
-<script src="https://prooflens.netlify.app/assets/prooflens-verify.min.js?v=1"></script>
-<img src="/assets/sample.jpg" data-manifest-url="/assets/sample.jpg.manifest.json" alt="Sample">
+<main class="container">
+  <h1 class="title">Live demo</h1>
+  <p class="lead">Click the <span class="kbd">CR</span> badge on the image.</p>
 
-<p><a href="/">← Home</a></p>
+  <div class="panel">
+    <!-- official embed -->
+    <script src="https://prooflens.netlify.app/assets/prooflens-verify.min.js?v=1"></script>
+    <img src="/assets/sample.jpg" data-manifest-url="/assets/sample.jpg.manifest.json" alt="Sample image">
+  </div>
+</main>
+
+<footer class="footer"><div class="container footer-inner"><div>© ProofLens</div></div></footer>
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "0e6b1abf18e948e2a934cf8b67476294"}'></script>
 </body></html>

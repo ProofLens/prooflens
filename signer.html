@@ -1,75 +1,65 @@
 <!doctype html><html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ProofLens — Signer (Client)</title>
-<style>
-body{font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;max-width:880px;margin:0 auto;padding:32px}
-.card{padding:20px;border:1px solid #e5e7eb;border-radius:16px;box-shadow:0 6px 18px rgba(0,0,0,.05);margin:18px 0}
-input[type=file],input[type=text],button{font-size:16px;padding:10px;border:1px solid #cbd5e1;border-radius:10px}
-pre{white-space:pre-wrap;background:#0f172a;color:#e5e7eb;padding:12px;border-radius:8px;overflow:auto}
-</style></head><body>
-<h1>ProofLens — Client Signer</h1>
-<p>Creates a detached manifest file (<code>.manifest.json</code>) for an image on your device. No upload leaves your browser.</p>
+<title>Signer — ProofLens</title>
+<link rel="icon" href="/assets/favicon.svg">
+<link rel="stylesheet" href="/assets/styles.css">
+</head><body>
+<header class="header"><div class="container nav">
+  <a class="brand" href="/"><svg viewBox="0 0 96 96"><rect width="96" height="96" rx="18" fill="#0f1426"/><circle cx="48" cy="48" r="20" fill="#6ea8ff" opacity=".25"/></svg><strong>ProofLens</strong></a>
+  <nav class="menu"><a href="/demo-embed.html">Demo</a><a href="/embed.html">Embed</a><a href="/signer.html">Signer</a><a href="/showcase.html">Showcase</a><a href="/pricing.html">Pricing</a></nav>
+</div></header>
 
-<div class="card">
-  <p><input id="file" type="file" accept="image/*"></p>
-  <p><input id="creator" type="text" placeholder="Creator (e.g., Moiz / DePaul Student Media)" style="width:100%"></p>
-  <p><button id="go">Create manifest</button></p>
-  <div id="result" style="display:none">
-    <h3>Manifest</h3>
-    <pre id="json"></pre>
-    <p>
-      <button id="dl">Download manifest</button>
-    </p>
-    <h3>Embed snippet</h3>
-    <pre id="snippet"></pre>
+<main class="container">
+  <div class="panel">
+    <h1 class="title">Client-side signer</h1>
+    <p class="lead">Create a detached manifest (<code>.manifest.json</code>) for an image in your browser. No upload leaves your device.</p>
+    <label>Choose an image</label>
+    <input id="file" type="file" accept="image/*">
+    <label>Creator</label>
+    <input id="creator" placeholder="Moiz / DePaul Student Media" style="width:100%">
+    <div class="spaced"><button class="btn" id="go">Create manifest</button></div>
+    <div id="result" style="display:none">
+      <h3>Manifest</h3>
+      <pre id="json"></pre>
+      <div class="spaced"><button class="btn" id="dl">Download manifest</button></div>
+      <h3>Embed snippet</h3>
+      <pre id="snippet"></pre>
+    </div>
   </div>
-</div>
-<img src="/assets/your-photo.jpg" data-manifest-url="/assets/your-photo.jpg.manifest.json" alt="">
-<script>
-async function sha256Hex(buf){
-  const h = await crypto.subtle.digest("SHA-256", buf);
-  return Array.from(new Uint8Array(h)).map(b=>b.toString(16).padStart(2,"0")).join("");
-}
-function nowIso(){ return new Date().toISOString(); }
+</main>
 
+<footer class="footer"><div class="container footer-inner"><div>© ProofLens</div></div></footer>
+
+<script>
+async function sha256Hex(buf){ const h=await crypto.subtle.digest("SHA-256",buf); return Array.from(new Uint8Array(h)).map(b=>b.toString(16).padStart(2,"0")).join(""); }
+function nowIso(){ return new Date().toISOString(); }
 document.getElementById('go').onclick = async ()=>{
-  const fi = document.getElementById('file').files[0];
-  const creator = document.getElementById('creator').value.trim() || "unknown";
+  const fi=document.getElementById('file').files[0];
+  const creator=(document.getElementById('creator').value||"unknown").trim();
   if(!fi){ alert("Choose an image first."); return; }
-  const buf = await fi.arrayBuffer();
-  const hash = await sha256Hex(buf);
-  const manifest = {
-    manifest_version: "demo-1",
-    created_at: nowIso(),
-    tool: "prooflens-client-signer v0",
-    creator: creator,
-    source_file: fi.name,
-    source_sha256: hash,
-    asset: { filename: fi.name, mime: fi.type || "application/octet-stream", bytes: fi.size, sha256: hash },
-    signing: { type: "demo-self-signed", key_id: "browser", note: "Demo manifest (no cryptographic cert)" },
-    edits: []
+  const buf=await fi.arrayBuffer();
+  const hash=await sha256Hex(buf);
+  const man={
+    manifest_version:"demo-1",
+    created_at:nowIso(),
+    tool:"prooflens-client-signer v0",
+    creator,
+    source_file:fi.name,
+    source_sha256:hash,
+    asset:{filename:fi.name,mime:fi.type||"application/octet-stream",bytes:fi.size,sha256:hash},
+    signing:{type:"demo-self-signed",key_id:"browser",note:"Demo manifest (no cryptographic cert)"},
+    edits:[]
   };
-  // show JSON
-  const jsonStr = JSON.stringify(manifest, null, 2);
-  document.getElementById('json').textContent = jsonStr;
-  document.getElementById('result').style.display = "block";
-  // prepare download
-  const blob = new Blob([jsonStr], {type:"application/json"});
-  const url = URL.createObjectURL(blob);
-  const dl = document.getElementById('dl');
-  const outName = fi.name + ".manifest.json";
-  dl.onclick = ()=> {
-    const a=document.createElement('a');
-    a.href=url; a.download=outName; a.click();
-    setTimeout(()=>URL.revokeObjectURL(url), 1000);
-  };
-  // embed snippet helper (you still need to host image+manifest together)
-  const snippet = `<script src="https://prooflens.netlify.app/assets/prooflens-verify.min.js?v=1"><\/script>
+  const jsonStr=JSON.stringify(man,null,2);
+  document.getElementById('json').textContent=jsonStr;
+  document.getElementById('result').style.display="block";
+  const blob=new Blob([jsonStr],{type:"application/json"});
+  const url=URL.createObjectURL(blob); const dl=document.getElementById('dl');
+  dl.onclick=()=>{ const a=document.createElement('a'); a.href=url; a.download=fi.name+".manifest.json"; a.click(); setTimeout(()=>URL.revokeObjectURL(url),800); };
+  const snippet=`<script src="https://prooflens.netlify.app/assets/prooflens-verify.min.js?v=1"><\/script>
 <img src="/path/${fi.name}" data-manifest-url="/path/${fi.name}.manifest.json" alt="">`;
-  document.getElementById('snippet').textContent = snippet;
+  document.getElementById('snippet').textContent=snippet;
 };
 </script>
-
-<p><a href="/">← Home</a> • <a href="/embed.html">Embed</a> • <a href="/pricing.html">Pricing</a></p>
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "0e6b1abf18e948e2a934cf8b67476294"}'></script>
 </body></html>

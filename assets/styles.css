@@ -1,0 +1,122 @@
+/* ---------- ProofLens Design System (Dark) ---------- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root{
+  --bg: #0a0f1b;
+  --bg-2: #0e1526;
+  --panel: rgba(22, 30, 49, .72);
+  --line: rgba(255,255,255,.08);
+  --text: #e9efff;
+  --muted: #a8b2d8;
+  --brand: #6ea8ff;
+  --brand-2: #9ad1ff;
+  --accent: #a78bfa; /* violet */
+  --ok: #7af5c4;
+  --warn: #ffd166;
+  --danger: #ff7a7a;
+
+  --shadow: 0 10px 40px rgba(0,0,0,.35);
+  --radius-lg: 16px;
+  --radius: 12px;
+  --radius-sm: 10px;
+
+  --container: 1080px;
+  --gap: 20px;
+}
+
+* { box-sizing: border-box }
+html, body { height: 100% }
+body{
+  margin:0;
+  background:
+    radial-gradient(1200px 800px at 80% -10%, rgba(110,168,255,.18), transparent 60%),
+    radial-gradient(900px 700px at -10% 30%, rgba(167,139,250,.12), transparent 60%),
+    var(--bg);
+  color: var(--text);
+  font: 16px/1.6 Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  letter-spacing: .2px;
+}
+
+/* Layout */
+.container{ max-width: var(--container); margin: 0 auto; padding: 32px 24px; }
+.header{ position: sticky; top:0; backdrop-filter: saturate(140%) blur(12px);
+  background: linear-gradient(180deg, rgba(10,15,27,.85), rgba(10,15,27,.55));
+  border-bottom: 1px solid var(--line); z-index: 10; }
+.nav{ display:flex; align-items:center; justify-content:space-between; gap:16px; }
+.brand{ display:flex; align-items:center; gap:12px; text-decoration:none; color:var(--text) }
+.brand svg{ width:28px; height:28px }
+.brand strong{ font-weight:700; letter-spacing:.3px }
+.menu{ display:flex; gap:14px; flex-wrap:wrap }
+.menu a{ color:var(--muted); text-decoration:none; padding:10px 12px; border-radius:10px }
+.menu a:hover{ background: rgba(255,255,255,.05); color: var(--text) }
+
+.footer{ border-top: 1px solid var(--line); margin-top: 40px; }
+.footer-inner{ display:flex; justify-content:space-between; gap:16px; color:var(--muted); font-size:14px }
+
+/* Blocks */
+.hero{ display:grid; grid-template-columns: 1.25fr 1fr; gap:28px; align-items:center;
+  padding: 28px 0 8px; }
+.badge{ display:inline-flex; gap:8px; align-items:center; font-size:12px; color:var(--muted);
+  border:1px solid var(--line); border-radius:999px; padding:6px 10px; }
+.title{ font-size:44px; line-height:1.15; margin:10px 0 6px; letter-spacing:.2px }
+.lead{ color:var(--muted); font-size:18px; margin:8px 0 16px }
+.cta-row{ display:flex; gap:12px; flex-wrap:wrap; margin-top:14px }
+
+.panel{
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  padding: 20px;
+}
+
+/* Forms */
+input, select, textarea, button {
+  background: #11172a;
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 12px 12px;
+  font-size: 16px;
+}
+textarea{ width:100%; min-height:120px; }
+label{ display:block; margin:10px 0 6px; color: var(--muted) }
+.btn{
+  background: linear-gradient(180deg, var(--brand), #4a8cf1);
+  color:#0a0f1b; font-weight:700; border:0; border-radius:12px; padding:12px 16px;
+  text-decoration:none; display:inline-block;
+  box-shadow: 0 8px 22px rgba(110,168,255,.35);
+}
+.btn:hover{ filter: brightness(1.05) }
+.btn-ghost{
+  background: rgba(255,255,255,.06);
+  color: var(--text); border:1px solid var(--line); box-shadow:none;
+}
+.kbd{ font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  border:1px solid var(--line); padding:2px 6px; border-radius:8px; background:#0e172b; color:#c9d4ff; }
+
+pre, code{ font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+pre{
+  background: #0e172b; color:#dfe7ff; border:1px solid var(--line);
+  border-radius:12px; padding:14px; overflow:auto;
+}
+
+/* Media cards */
+.grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap:16px }
+.card{ border:1px solid var(--line); border-radius:14px; overflow:hidden; background: rgba(255,255,255,.03) }
+.card img{ width:100%; height:160px; object-fit:cover; display:block; }
+.card .p{ padding:12px }
+.muted{ color: var(--muted) }
+
+/* Utilities */
+.center{ text-align:center }
+.spaced{ margin-top:20px }
+hr{ border:0; border-top:1px solid var(--line); margin: 26px 0 }
+.small{ font-size:14px }
+
+/* Responsive */
+@media (max-width: 880px){
+  .hero{ grid-template-columns: 1fr; }
+  .title{ font-size:34px }
+  .menu{ gap:8px }
+}

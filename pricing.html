@@ -1,32 +1,48 @@
 <!doctype html><html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Pricing — ProofLens</title>
-<style>
-body{font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;max-width:880px;margin:0 auto;padding:40px}
-.card{padding:20px;border:1px solid #e5e7eb;border-radius:16px;box-shadow:0 6px 18px rgba(0,0,0,.05);margin:18px 0}
-input,button{font-size:16px;padding:10px;border:1px solid #cbd5e1;border-radius:10px}
-</style></head><body>
-<h1>Pricing</h1>
+<link rel="icon" href="/assets/favicon.svg">
+<link rel="stylesheet" href="/assets/styles.css">
+</head><body>
+<header class="header"><div class="container nav">
+  <a class="brand" href="/"><svg viewBox="0 0 96 96"><rect width="96" height="96" rx="18" fill="#0f1426"/><circle cx="48" cy="48" r="20" fill="#6ea8ff" opacity=".25"/></svg><strong>ProofLens</strong></a>
+  <nav class="menu"><a href="/demo-embed.html">Demo</a><a href="/embed.html">Embed</a><a href="/signer.html">Signer</a><a href="/showcase.html">Showcase</a><a href="/pricing.html">Pricing</a></nav>
+</div></header>
 
-<div class="card">
-  <h3>Campus Pilot — $49 one-time</h3>
-  <ul><li>10 images signed</li><li>1-page integration help</li><li>1 week support</li></ul>
-</div>
+<main class="container">
+  <h1 class="title">Pricing</h1>
+  <div class="grid">
+    <div class="panel">
+      <h3>Campus Pilot — $49 one-time</h3>
+      <ul>
+        <li>10 images signed</li>
+        <li>1-page integration help</li>
+        <li>1 week support</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3>Creator Pro — $5/mo</h3>
+      <ul>
+        <li>Hosted badge JS</li>
+        <li>Priority email support</li>
+      </ul>
+    </div>
+  </div>
 
-<div class="card">
-  <h3>Creator Pro — $5/mo</h3>
-  <ul><li>Hosted badge JS</li><li>Priority email support</li></ul>
-</div>
+  <div class="panel">
+    <h3>Book a pilot</h3>
+    <form name="pricing-contact" method="POST" data-netlify="true" action="/success.html">
+      <input type="hidden" name="form-name" value="pricing-contact">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div><label>Name</label><input name="name" required style="width:100%"></div>
+        <div><label>Email</label><input name="email" type="email" required style="width:100%"></div>
+      </div>
+      <div class="spaced"><label>Organization (optional)</label><input name="org" style="width:100%"></div>
+      <button class="btn" type="submit">Send</button>
+    </form>
+  </div>
+</main>
 
-<h3>Book a pilot</h3>
-<form name="pricing-contact" method="POST" data-netlify="true" action="/success.html">
-  <input type="hidden" name="form-name" value="pricing-contact">
-  <p><input name="name" placeholder="Name" required style="width:100%"></p>
-  <p><input name="email" type="email" placeholder="Email" required style="width:100%"></p>
-  <p><input name="org" placeholder="Organization (optional)" style="width:100%"></p>
-  <button type="submit">Send</button>
-</form>
-
-<p><a href="/">← Home</a></p>
+<footer class="footer"><div class="container footer-inner"><div>© ProofLens</div></div></footer>
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "0e6b1abf18e948e2a934cf8b67476294"}'></script>
 </body></html>
