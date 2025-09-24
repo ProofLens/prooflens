@@ -1,0 +1,29 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Embed — ProofLens</title>
+<style>
+body{font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;max-width:880px;margin:0 auto;padding:32px}
+input,button,textarea{font-size:16px;padding:10px;border:1px solid #cbd5e1;border-radius:8px}
+textarea{width:100%;height:140px}
+label{display:block;margin:8px 0 4px}
+</style></head><body>
+<h1>Embed the CR badge</h1>
+<p>Paste your image URL and the manifest URL. Copy this snippet into your page.</p>
+<label>Image URL</label>
+<input id="img" placeholder="https://yoursite.com/images/photo.jpg" style="width:100%">
+<label>Manifest URL</label>
+<input id="man" placeholder="https://yoursite.com/images/photo.jpg.manifest.json" style="width:100%">
+<p><button onclick="gen()">Generate code</button></p>
+<h3>Your snippet</h3>
+<textarea id="out" readonly></textarea>
+<script>
+function gen(){
+  const img=document.getElementById('img').value.trim();
+  const man=document.getElementById('man').value.trim();
+  const s=`<script src="https://prooflens.netlify.app/assets/prooflens-verify.min.js?v=1"><\/script>
+<img src="${img}" data-manifest-url="${man}" alt="">`;
+  document.getElementById('out').value=s;
+}
+</script>
+<p><a href="/">← Home</a></p>
+</body></html>
