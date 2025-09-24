@@ -18,13 +18,24 @@
   <h3>Join the pilot waitlist</h3>
   <form name="waitlist" method="POST" data-netlify="true" action="/success.html">
     <input type="hidden" name="form-name" value="waitlist">
-    <label>Email<br>
-        <input name="email" type="email" required>
-    </label>
+    <p><input name="email" type="email" placeholder="you@depaul.edu" required></p>
+    <p>
+      <select name="role">
+        <option value="">I am…</option>
+        <option>Student journalist</option>
+        <option>Photographer</option>
+        <option>Club officer</option>
+        <option>Faculty/Staff</option>
+        <option>Other</option>
+      </select>
+    </p>
+    <p><input name="org" placeholder="Organization (optional)"></p>
     <button type="submit">Notify me</button>
-    </form>
+  </form>
+
 </div>
 
 <p><a href="/blog/c2pa-in-10-minutes.md">C2PA in 10 minutes (for students)</a></p>
 <p><small>GitHub: <a href="https://github.com/prooflens">prooflens</a></small></p>
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "0e6b1abf18e948e2a934cf8b67476294"}'></script>
 </body></html>
