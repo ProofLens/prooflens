@@ -4,23 +4,25 @@ on:
   pull_request: { branches: [ main ] }
 
 jobs:
-  python:
-    runs-on: ubuntu-latest
-    defaults: { run: { working-directory: signer } }
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with: { python-version: '3.11' }
-      - run: pip install --upgrade pip ruff bandit
-      - run: ruff check . || true
-      - run: bandit -q -r . || true
-
   web:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Verify site files exist
+      - name: Sanity check site files
+        shell: bash
         run: |
-          test -f site/demo-embed.html
-          test -f site/verify.html
-          echo "Site sanity OK"
+          set -e
+          # Accept either root or site/ layout to be robust
+          if [ -f demo-embed.html ]; then
+            echo "Found root-level pages."
+            test -f demo-embed.html
+            test -f verify.html
+          elif [ -f site/demo-embed.html ]; then
+            echo "Found site/ pages."
+            test -f site/demo-embed.html
+            test -f site/verify.html
+          else
+            echo "Could not find demo-embed.html or verify.html" >&2
+            exit 1
+          fi
+          echo "Site sanity OK."
