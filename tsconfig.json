@@ -1,0 +1,7 @@
+{
+  "files": [],
+  "references": [
+    { "path": "packages/claim" },
+    { "path": "packages/identity" }
+  ]
+}

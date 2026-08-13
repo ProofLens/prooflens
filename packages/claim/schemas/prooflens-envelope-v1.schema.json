@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:prooflens:schema:envelope:v1",
+  "title": "ProofLens detached creator envelope v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["claim", "signature"],
+  "properties": {
+    "claim": { "$ref": "#/$defs/claim" },
+    "signature": { "$ref": "#/$defs/signature" }
+  },
+  "$defs": {
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3}Z$"
+    },
+    "httpsUrl": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://",
+      "maxLength": 2048
+    },
+    "claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "claimId", "issuedAt", "creatorKid", "asset", "creator", "edits", "locators"],
+      "properties": {
+        "version": { "const": "1.0" },
+        "claimId": {
+          "type": "string",
+          "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+          "maxLength": 45
+        },
+        "issuedAt": { "$ref": "#/$defs/timestamp" },
+        "creatorKid": { "$ref": "#/$defs/httpsUrl" },
+        "asset": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["filename", "mime", "bytes", "sha256"],
+          "properties": {
+            "filename": { "type": "string", "minLength": 1, "maxLength": 255, "pattern": "^[^/\\\\]+$" },
+            "mime": { "enum": ["image/jpeg", "image/png", "image/webp"] },
+            "bytes": { "type": "integer", "minimum": 0, "maximum": 9007199254740991 },
+            "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+          }
+        },
+        "creator": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["displayName", "creditLine", "caption"],
+          "properties": {
+            "displayName": { "type": "string", "minLength": 1, "maxLength": 200 },
+            "creditLine": { "type": "string", "minLength": 1, "maxLength": 500 },
+            "caption": { "type": "string", "maxLength": 4000 }
+          }
+        },
+        "edits": {
+          "type": "array",
+          "maxItems": 100,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["action", "at"],
+            "properties": {
+              "action": { "type": "string", "minLength": 1, "maxLength": 500 },
+              "at": { "$ref": "#/$defs/timestamp" },
+              "software": { "type": "string", "minLength": 1, "maxLength": 500 }
+            }
+          }
+        },
+        "locators": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "claim": { "$ref": "#/$defs/httpsUrl" },
+            "c2pa": { "$ref": "#/$defs/httpsUrl" },
+            "rights": { "$ref": "#/$defs/httpsUrl" }
+          }
+        }
+      }
+    },
+    "signature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["alg", "kid", "value"],
+      "properties": {
+        "alg": { "const": "ES256" },
+        "kid": { "$ref": "#/$defs/httpsUrl" },
+        "value": { "type": "string", "pattern": "^[A-Za-z0-9_-]{86}$" }
+      }
+    }
+  }
+}

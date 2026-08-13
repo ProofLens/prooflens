@@ -1,0 +1,27 @@
+{
+  "name": "@prooflens/identity",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./schemas/*": "./schemas/*"
+  },
+  "files": ["dist", "schemas"],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "typecheck:tests": "tsc -p tsconfig.test.json --noEmit",
+    "test": "pnpm --filter @prooflens/claim build && vitest run"
+  },
+  "dependencies": {
+    "@prooflens/claim": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "26.1.2",
+    "typescript": "6.0.2",
+    "vitest": "4.1.10"
+  }
+}
