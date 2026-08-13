@@ -18,12 +18,15 @@ export interface ProvenanceDiscoveryInput {
   html?: string;
   detachedEnvelope?: unknown;
   legacyManifest?: unknown;
+  c2paClaim?: CompactEmbeddedClaim;
 }
+
+export type DiscoveredC2pa = "absent" | CompactEmbeddedClaim;
 
 export interface ProvenanceDiscovery {
   state: "consistent" | "invalid";
   reasons: string[];
-  c2pa: "absent";
+  c2pa: DiscoveredC2pa;
   xmp?: CompactEmbeddedClaim;
   html?: ProofLensEnvelope;
   detached?: ProofLensEnvelope;
@@ -69,6 +72,14 @@ export async function discoverProvenance(input: ProvenanceDiscoveryInput): Promi
   }
 
   const comparables: ComparableClaim[] = [];
+  if (input.c2paClaim !== undefined) {
+    comparables.push({
+      source: "C2PA",
+      claimId: input.c2paClaim.claimId,
+      creatorKid: input.c2paClaim.creatorKid,
+      caption: input.c2paClaim.creator.caption
+    });
+  }
   if (image.compactClaim !== undefined) {
     comparables.push({
       source: "XMP",
@@ -105,7 +116,7 @@ export async function discoverProvenance(input: ProvenanceDiscoveryInput): Promi
   const result: ProvenanceDiscovery = {
     state: reasons.length === 0 ? "consistent" : "invalid",
     reasons,
-    c2pa: "absent",
+    c2pa: input.c2paClaim ?? "absent",
     recursiveFinalFileDigest: image.recursiveFinalFileDigest
   };
   if (image.compactClaim !== undefined) result.xmp = image.compactClaim;

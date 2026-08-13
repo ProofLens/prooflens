@@ -176,4 +176,27 @@ describe("JPEG, PNG, and WebP metadata carriage", () => {
     expect(discovery.reasons.some((reason) => /claimId conflicts/u.test(reason))).toBe(true);
     expect(discovery.reasons).toContain("Legacy demo-1 claim conflicts with a v1 ProofLens claim");
   });
+
+  it("compares a C2PA ProofLens assertion with XMP and does not merge conflicts", async () => {
+    const fixtures = generateFixtures();
+    const mime = fixtures.png.mime;
+    const draft = await claimFor(await createDetachedAssetBinding(fixtures.png.bytes, fixtures.png.filename, mime));
+    const embedded = await embedImageProvenance(fixtures.png.bytes, mime, draft);
+    const compact = toCompactEmbeddedClaim(draft);
+    const matching = await discoverProvenance({ bytes: embedded, mime, c2paClaim: compact });
+    expect(matching.state).toBe("consistent");
+    expect(matching.c2pa).toEqual(compact);
+
+    const conflicting = await discoverProvenance({
+      bytes: embedded,
+      mime,
+      c2paClaim: toCompactEmbeddedClaim({
+        ...draft,
+        claimId: "urn:uuid:7f9619ff-8b86-4e7f-bf84-6f3dd629e11a",
+        creator: { ...draft.creator, caption: "A different caption" }
+      })
+    });
+    expect(conflicting.state).toBe("invalid");
+    expect(conflicting.reasons.some((reason) => /C2PA/.test(reason))).toBe(true);
+  });
 });

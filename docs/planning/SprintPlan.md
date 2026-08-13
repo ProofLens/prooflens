@@ -18,7 +18,14 @@ writers, HTML `application/prooflens+json` carriage, non-recursive embedded
 claims, malformed-input, stripped-metadata, and detached-binding tests, and
 GitHub Actions coverage of `pnpm check` plus history verification are complete.
 
-Next milestone: Phase 3, C2PA Generator Product integration. Phase 3 has not
+Phase 3 passed on 2026-08-13: labeled development/test C2PA Generator Product
+credentials, `@contentauth/c2pa-node` signing of JPEG, PNG, and WebP with a
+non-recursive ProofLens assertion, Node and `@contentauth/c2pa-web` CAI
+validation of claim/asset integrity, and separate reporting of C2PA signature
+validity versus ecosystem trust. Development credentials remain
+`valid-untrusted` and never authenticate the human creator.
+
+Active milestone: Phase 4, React, packages, CLI, and Python. Phase 4 has not
 started.
 
 Infrastructure provisioning is intentionally blocked until the Phase 5 core acceptance gate passes.

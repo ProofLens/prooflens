@@ -2,4 +2,5 @@ packages:
   - "packages/*"
   - "fixtures"
 allowBuilds:
-  sharp: set this to true or false
+  "@contentauth/c2pa-node": true
+  esbuild: true

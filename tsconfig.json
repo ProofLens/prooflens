@@ -4,6 +4,7 @@
     { "path": "packages/claim" },
     { "path": "packages/identity" },
     { "path": "packages/metadata" },
+    { "path": "packages/c2pa-node" },
     { "path": "fixtures" }
   ]
 }
