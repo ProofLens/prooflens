@@ -65,6 +65,11 @@ for (const [name, item] of Object.entries(imports)) {
     createHash("sha256").update(readFileSync(licensePath)).digest("hex") === licenseSha256;
   check(licenseOk, `${item.path}/LICENSE is preserved`);
   check(git("log", "--format=%H", "--", item.path).length > 0, `${item.path} has canonical path history`);
+  for (const trackedFile of ["LICENSE", "README.md"]) {
+    const sourceBlob = git("rev-parse", `${item.final}:${trackedFile}`);
+    const importedBlob = git("rev-parse", `HEAD:${item.path}/${trackedFile}`);
+    check(sourceBlob === importedBlob, `${item.path}/${trackedFile} matches the final standalone snapshot`);
+  }
 }
 
 if (failures.length > 0) {
