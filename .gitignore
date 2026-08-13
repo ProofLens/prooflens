@@ -10,6 +10,9 @@ dist/
 # Data
 uploads/
 weights/
+fixtures/generated/
+fixtures/examples/*
+!fixtures/examples/README.md
 # OS
 .DS_Store
 Thumbs.db

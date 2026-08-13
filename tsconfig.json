@@ -2,6 +2,8 @@
   "files": [],
   "references": [
     { "path": "packages/claim" },
-    { "path": "packages/identity" }
+    { "path": "packages/identity" },
+    { "path": "packages/metadata" },
+    { "path": "fixtures" }
   ]
 }

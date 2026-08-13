@@ -12,7 +12,13 @@ identity validity/revocation semantics, isolated read-only `demo-1`
 verification, and deterministic TypeScript/Node/Python golden-vector and
 adversarial tests are complete.
 
-Next milestone: Phase 2, deterministic fixtures and metadata. Phase 2 has not
+Phase 2 passed on 2026-08-13: deterministic JPEG, PNG, and WebP fixtures from
+source pixels, IPTC/XMP and ProofLens locator round-trips, pixel-preserving
+writers, HTML `application/prooflens+json` carriage, non-recursive embedded
+claims, malformed-input, stripped-metadata, and detached-binding tests, and
+GitHub Actions coverage of `pnpm check` plus history verification are complete.
+
+Next milestone: Phase 3, C2PA Generator Product integration. Phase 3 has not
 started.
 
 Infrastructure provisioning is intentionally blocked until the Phase 5 core acceptance gate passes.

@@ -8,11 +8,11 @@
     "node": ">=24"
   },
   "scripts": {
-    "build": "pnpm -r --if-present build",
-    "typecheck": "tsc -b --pretty false && pnpm -r --if-present typecheck:tests",
-    "test": "pnpm -r --if-present test",
+    "build": "corepack pnpm -r --if-present build",
+    "typecheck": "tsc -b --pretty false && corepack pnpm -r --if-present typecheck:tests",
+    "test": "corepack pnpm -r --if-present test",
     "test:python": "node scripts/run-python-tests.mjs",
-    "check": "pnpm typecheck && pnpm test && pnpm test:python && pnpm build"
+    "check": "corepack pnpm typecheck && corepack pnpm test && corepack pnpm test:python && corepack pnpm build"
   },
   "devDependencies": {
     "@types/node": "26.1.2",

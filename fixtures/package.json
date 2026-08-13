@@ -1,23 +1,23 @@
 {
-  "name": "@prooflens/identity",
+  "name": "@prooflens/fixtures",
   "version": "1.0.0",
   "type": "module",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
-    },
-    "./schemas/*": "./schemas/*"
+    }
   },
-  "files": ["dist", "schemas"],
+  "files": ["dist", "examples"],
   "scripts": {
     "build": "tsc -p tsconfig.json",
+    "generate": "tsc -p tsconfig.json && node dist/cli.js",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "typecheck:tests": "tsc -p tsconfig.test.json --noEmit",
-    "test": "tsc -b ../claim/tsconfig.json && vitest run"
+    "test": "vitest run"
   },
   "dependencies": {
-    "@prooflens/claim": "workspace:*"
+    "jpeg-js": "0.4.4"
   },
   "devDependencies": {
     "@types/node": "26.1.2",
