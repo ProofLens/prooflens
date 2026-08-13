@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ProofLens Demo Manifest v0",
+  "type": "object",
+  "required": ["manifest_version", "created_at", "tool", "creator", "asset", "signing"],
+  "properties": {
+    "manifest_version": { "type": "string", "enum": ["demo-1"] },
+    "created_at": { "type": "string" },
+    "tool": { "type": "string" },
+    "creator": { "type": "string" },
+    "asset": {
+      "type": "object",
+      "required": ["filename", "mime", "bytes", "sha256"],
+      "properties": {
+        "filename": { "type": "string" },
+        "mime": { "type": "string" },
+        "bytes": { "type": "integer" },
+        "sha256": { "type": "string" }
+      }
+    },
+    "source_file": { "type": "string" },
+    "source_sha256": { "type": "string" },
+    "signing": {
+      "type": "object",
+      "required": ["type", "key_id", "note"],
+      "properties": {
+        "type": { "type": "string" },
+        "key_id": { "type": "string" },
+        "note": { "type": "string" }
+      }
+    },
+    "edits": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["op", "ts"],
+        "properties": {
+          "op": { "type": "string" },
+          "ts": { "type": "string" }
+        }
+      }
+    }
+  }
+}
