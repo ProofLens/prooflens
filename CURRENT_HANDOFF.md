@@ -24,7 +24,6 @@
 
 - No blocker prevents local Phase 1 implementation.
 - Publishing the Phase 0 branch or changing canonical remote state requires explicit authorization.
-- The referenced `career-ops` skill and user-layer files (`cv.md`, profile, portals, applications tracker) do not exist in this ProofLens repository and are outside its approved architecture; none were created or removed.
 
 ## Next three tasks
 
