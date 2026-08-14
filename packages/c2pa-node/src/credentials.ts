@@ -14,9 +14,12 @@ import {
   C2PA_DEVELOPMENT_LEAF_NAME,
   C2PA_DEVELOPMENT_ROOT_NAME,
   C2PA_DOCUMENT_SIGNING_EKU,
-  C2PA_EMAIL_PROTECTION_EKU
+  C2PA_EMAIL_PROTECTION_EKU,
+  isLabeledDevelopmentC2paCredential
 } from "./constants.js";
 import type { DevelopmentC2paCredentials } from "./types.js";
+
+export { isLabeledDevelopmentC2paCredential };
 
 const ALG = { name: "ECDSA", namedCurve: "P-256", hash: "SHA-256" } as const;
 const NOT_BEFORE = new Date("2026-01-01T00:00:00.000Z");
@@ -31,10 +34,6 @@ function pem(label: string, bytes: ArrayBuffer): string {
 
 async function generateKeys(): Promise<CryptoKeyPair> {
   return crypto.subtle.generateKey(ALG, true, ["sign", "verify"]);
-}
-
-export function isLabeledDevelopmentC2paCredential(subject: string): boolean {
-  return /DEVELOPMENT TEST/u.test(subject);
 }
 
 export async function createDevelopmentC2paCredentials(): Promise<DevelopmentC2paCredentials> {

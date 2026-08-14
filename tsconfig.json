@@ -5,6 +5,9 @@
     { "path": "packages/identity" },
     { "path": "packages/metadata" },
     { "path": "packages/c2pa-node" },
+    { "path": "packages/verifier" },
+    { "path": "packages/react" },
+    { "path": "packages/cli" },
     { "path": "fixtures" }
   ]
 }

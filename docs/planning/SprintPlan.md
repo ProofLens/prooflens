@@ -25,7 +25,14 @@ validation of claim/asset integrity, and separate reporting of C2PA signature
 validity versus ecosystem trust. Development credentials remain
 `valid-untrusted` and never authenticate the human creator.
 
-Active milestone: Phase 4, React, packages, CLI, and Python. Phase 4 has not
-started.
+Phase 4 passed on 2026-08-13: framework-neutral verifier, React
+components/hooks, auto-attach bundle, Node signer/verifier CLI, and Python
+ProofLens interoperability. Browser signing covers only the ProofLens creator
+identity layer; canonical C2PA signing remains Node-based. Chromium, Firefox,
+and WebKit pass keyboard/focus, live-region, CORS, currentSrc, offline,
+unavailable-registry, and conflict scenarios without collapsing ProofLens and
+C2PA evidence.
+
+Active milestone: Phase 5, core acceptance gate. Phase 5 has not started.
 
 Infrastructure provisioning is intentionally blocked until the Phase 5 core acceptance gate passes.

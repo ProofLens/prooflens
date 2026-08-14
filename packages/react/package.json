@@ -1,0 +1,42 @@
+{
+  "name": "@prooflens/react",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "typecheck:tests": "tsc -p tsconfig.test.json --noEmit",
+    "test": "tsc -b ../claim/tsconfig.json ../identity/tsconfig.json ../metadata/tsconfig.json ../c2pa-node/tsconfig.json ../verifier/tsconfig.json && vitest run",
+    "test:browser": "playwright test --config playwright.config.ts"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0"
+  },
+  "dependencies": {
+    "@prooflens/identity": "workspace:*",
+    "@prooflens/verifier": "workspace:*"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.62.1",
+    "@prooflens/c2pa-node": "workspace:*",
+    "@prooflens/claim": "workspace:*",
+    "@prooflens/fixtures": "workspace:*",
+    "@prooflens/metadata": "workspace:*",
+    "@types/node": "26.1.2",
+    "@types/react": "19.2.7",
+    "@types/react-dom": "19.2.3",
+    "esbuild": "0.28.2",
+    "playwright": "1.62.1",
+    "react": "19.2.1",
+    "react-dom": "19.2.1",
+    "typescript": "6.0.2",
+    "vitest": "4.1.10"
+  }
+}

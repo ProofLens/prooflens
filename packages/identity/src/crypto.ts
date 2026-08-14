@@ -68,10 +68,22 @@ export async function exportRegistryPublicJwk(publicKey: CryptoKey): Promise<Reg
   };
 }
 
-export async function signClaim(value: ProofLensClaim, privateKey: CryptoKey): Promise<ProofLensEnvelope> {
+export async function signClaim(
+  value: ProofLensClaim,
+  privateKey: CryptoKey,
+  options?: { allowExtractable?: boolean }
+): Promise<ProofLensEnvelope> {
   const claim = parseClaim(value);
-  if (privateKey.type !== "private" || privateKey.extractable || privateKey.algorithm.name !== "ECDSA" || !privateKey.usages.includes("sign")) {
-    throw new Error("Expected a non-extractable ECDSA creator signing key");
+  const allowExtractable = options?.allowExtractable === true;
+  if (
+    privateKey.type !== "private"
+    || privateKey.algorithm.name !== "ECDSA"
+    || !privateKey.usages.includes("sign")
+    || (!allowExtractable && privateKey.extractable)
+  ) {
+    throw new Error(allowExtractable
+      ? "Expected an ECDSA creator signing key"
+      : "Expected a non-extractable ECDSA creator signing key");
   }
   const signature = normalizeP256Signature(new Uint8Array(await crypto.subtle.sign(
     { name: "ECDSA", hash: "SHA-256" },

@@ -10,10 +10,14 @@ import {
   type ProofLensEnvelope
 } from "@prooflens/claim";
 import {
+  createBrowserCreatorKey,
   exportRegistryPublicJwk,
   generateCreatorKey,
+  generateStoredCreatorKey,
   parseRegistryRecord,
+  restoreBrowserCreatorKey,
   signClaim,
+  signClaimWithStoredKey,
   verifyCreatorSignature,
   verifySignedAsset,
   type RegistryIdentityRecord
@@ -173,5 +177,38 @@ describe("strict registry and trust semantics", () => {
     }, new Date("2026-08-13T12:01:00.000Z"))).reasons).toContain("Registry revocation time is in the future");
     const result = await verifySignedAsset(asset, envelope, { ...record, kid: "https://registry.example.test/v1/keys/other" });
     expect(result).toMatchObject({ state: "invalid", signature: "unverified", identity: "invalid" });
+  });
+});
+
+describe("browser creator keys and CLI stored keys", () => {
+  it("keeps the restored browser working key non-extractable and able to sign", async () => {
+    const created = await createBrowserCreatorKey("correct-passphrase");
+    expect(created.keyPair.privateKey.extractable).toBe(false);
+    await expect(crypto.subtle.exportKey("pkcs8", created.keyPair.privateKey)).rejects.toThrow();
+    const restored = await restoreBrowserCreatorKey(created.backup, "correct-passphrase");
+    expect(restored.keyPair.privateKey.extractable).toBe(false);
+    expect(restored.publicJwk).toEqual(created.publicJwk);
+    const { envelope } = await fixture();
+    const signed = await signClaim(envelope.claim, restored.keyPair.privateKey);
+    expect(await verifyCreatorSignature(signed, restored.keyPair.publicKey)).toBe(true);
+    await expect(restoreBrowserCreatorKey(created.backup, "wrong-pass")).rejects.toThrow(/decrypt/u);
+  });
+
+  it("signs with extractable CLI keys without reusing them for C2PA", async () => {
+    const stored = await generateStoredCreatorKey();
+    expect(stored.privateJwk.key_ops).toEqual(["sign"]);
+    expect(stored.publicJwk.key_ops).toEqual(["verify"]);
+    const { claim } = await fixture();
+    const envelope = await signClaimWithStoredKey(claim, stored.privateJwk);
+    const publicKey = await crypto.subtle.importKey(
+      "jwk",
+      stored.publicJwk,
+      { name: "ECDSA", namedCurve: "P-256" },
+      false,
+      ["verify"]
+    );
+    expect(await verifyCreatorSignature(envelope, publicKey)).toBe(true);
+    const browser = await generateCreatorKey();
+    await expect(signClaim(claim, browser.privateKey)).resolves.toMatchObject({ claim: { creatorKid: claim.creatorKid } });
   });
 });

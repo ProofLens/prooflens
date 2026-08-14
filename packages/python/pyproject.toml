@@ -9,5 +9,8 @@ description = "ProofLens v1 golden-vector interoperability checks"
 requires-python = ">=3.11"
 dependencies = ["cryptography>=44"]
 
+[project.scripts]
+prooflens-interop = "prooflens_interop.cli:main"
+
 [tool.setuptools.packages.find]
 where = ["src"]

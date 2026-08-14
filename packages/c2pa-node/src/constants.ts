@@ -2,6 +2,10 @@ export const PROOFLENS_C2PA_ASSERTION_LABEL = "org.prooflens.claim";
 export const PROOFLENS_GENERATOR_PRODUCT_NAME = "ProofLens Generator Product";
 export const PROOFLENS_GENERATOR_PRODUCT_VERSION = "1.0.0";
 export const C2PA_DEVELOPMENT_LABEL = "DEVELOPMENT TEST";
+
+export function isLabeledDevelopmentC2paCredential(subject: string): boolean {
+  return /DEVELOPMENT TEST/u.test(subject);
+}
 export const C2PA_NOT_PRODUCTION_ROOT_LABEL = "NOT A PRODUCTION TRUST ROOT";
 export const C2PA_DOCUMENT_SIGNING_EKU = "1.3.6.1.5.5.7.3.36";
 export const C2PA_EMAIL_PROTECTION_EKU = "1.3.6.1.5.5.7.3.4";

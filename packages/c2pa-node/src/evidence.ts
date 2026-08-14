@@ -1,4 +1,4 @@
-import { isLabeledDevelopmentC2paCredential } from "./credentials.js";
+import { isLabeledDevelopmentC2paCredential } from "./constants.js";
 import { activeManifest, findProofLensAssertion } from "./assertion.js";
 import type { C2paEvidence, C2paValidationStatus, ManifestStoreLike } from "./types.js";
 

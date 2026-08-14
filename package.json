@@ -12,10 +12,12 @@
     "typecheck": "tsc -b --pretty false && corepack pnpm -r --if-present typecheck:tests",
     "test": "corepack pnpm -r --if-present test",
     "test:python": "node scripts/run-python-tests.mjs",
-    "check": "corepack pnpm typecheck && corepack pnpm test && corepack pnpm test:python && corepack pnpm build"
+    "test:browser": "corepack pnpm --filter @prooflens/react test:browser",
+    "check": "corepack pnpm typecheck && corepack pnpm test && corepack pnpm test:python && corepack pnpm build && corepack pnpm test:browser"
   },
   "devDependencies": {
     "@types/node": "26.1.2",
+    "playwright": "1.62.1",
     "typescript": "6.0.2",
     "vitest": "4.1.10"
   }
