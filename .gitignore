@@ -10,6 +10,7 @@ dist/
 .wrangler-config/
 worker-configuration.d.ts
 *.tsbuildinfo
+*.cpuprofile
 # Data
 uploads/
 weights/

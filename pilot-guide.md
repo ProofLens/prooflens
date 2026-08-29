@@ -12,9 +12,14 @@
 
 2\) Put `photo.jpg.manifest.json` next to it (we’ll generate this for you).
 
-3\) Add the script:
+3\) Add the script. `prooflens-verify-widget` is retired in favor of the
+canonical monorepo; its replacement is built from source there
+(`packages/verifier`) via
+`pnpm --filter @prooflens/verifier build`, which writes
+`packages/verifier/dist/prooflens-verify.min.js` for you to host alongside
+your site:
 
-&nbsp;  <script src="https://cdn.jsdelivr.net/gh/prooflens/prooflens-verify-widget@main/dist/prooflens-verify.min.js"></script>
+&nbsp;  <script src="/assets/prooflens-verify.min.js"></script>
 
 4\) Add `data-manifest-url` to the `<img>`:
 

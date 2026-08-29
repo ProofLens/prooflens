@@ -59,4 +59,15 @@ compressed responses, which the exact-match comparison rejected — was fixed to
 use the RFC 7232 weak-comparison algorithm and redeployed to both
 environments. See `CURRENT_HANDOFF.md` for the full deployment record.
 
-Next milestone: Phase 7, migration and archive. Phase 7 has not started.
+Phase 7 local work passed on 2026-08-29: public documentation (`README.md`,
+`pilot-guide.md`) was updated to canonical monorepo paths and to name
+`@prooflens/cli` and `@prooflens/verifier`/`@prooflens/react` as the signer
+and verify-widget replacements instead of the standalone repositories.
+Legacy links, standalone-repo state (unarchived, unchanged since import, 0
+open issues/PRs, 0 webhooks), imported-history reachability, and both
+`prooflens-preview`/`prooflens-production` deployment health were reverified
+live. All five `IMPLEMENTATION_PLAN.md` archive-gate criteria pass — see
+`docs/planning/phase7-archive-checklist.md` and
+`docs/history/phase7-migration.md`. Archiving
+`prooflens-signer`/`prooflens-verify-widget` is authorized only after
+explicit user sign-off on that checklist; it has not been performed.

@@ -62,6 +62,11 @@
 - Phase 6 passed on 2026-08-29. The unified Cloudflare Worker application from
   ADR 0002 (React/Vite static assets plus `/api/*` Worker routes, one D1
   binding per environment) is deployed and verified live.
+- Phase 7 (migration and archive readiness) completed its local scope on
+  2026-08-29. See "Phase 7 migration and archive record" below. The archive
+  gate PASSES; archiving the two standalone repositories is authorized only
+  after this report is reviewed and the user gives explicit final
+  authorization for that specific external action.
 
 ## Phase 6 deployment record
 
@@ -97,6 +102,53 @@
 - The demo page was loaded in a real browser against the live preview
   deployment and rendered live registry status (service available,
   environment `preview`, identity `trusted`) with no console errors.
+
+## Phase 7 migration and archive record
+
+Full detail: `docs/history/phase7-migration.md` and
+`docs/planning/phase7-archive-checklist.md`.
+
+- `README.md` and `pilot-guide.md` no longer point at
+  `github.com/ProofLens/prooflens-signer` /
+  `prooflens-verify-widget` as live code locations. They now name the
+  canonical `legacy/signer` and `legacy/verify-widget` history paths and the
+  concrete replacements: `@prooflens/cli` (`prooflens identity
+  generate`/`identity sign`/`c2pa sign`/`verify`) for the signer, and
+  `@prooflens/verifier`'s auto-attach bundle
+  (`pnpm --filter @prooflens/verifier build`) plus `@prooflens/react` for the
+  verify widget.
+- Live-checked 2026-08-29 via `gh api`: both `ProofLens/prooflens-signer` and
+  `ProofLens/prooflens-verify-widget` are unarchived, have 0 open
+  issues/PRs, 0 webhooks, non-bypassable branch protection only (no admin
+  override, no force-push/deletion), and default-branch HEADs
+  (`20e248ac...`, `46bb795...`) and `v0.1.0` tags identical to the commits
+  recorded at Phase 0 import — neither repository changed since import.
+  LICENSE blobs on both are byte-identical and match the imported
+  `legacy/*/LICENSE` SHA-256 recorded in `docs/history/standalone-imports.md`.
+- `node scripts/verify-phase0-history.mjs` re-run and passes (18/18): final
+  and representative commit reachability, rollback-tag resolution,
+  namespaced tag preservation, and byte-identical LICENSE/README snapshots
+  for both imported histories.
+- Canonical deployment reverified healthy without any redeploy: `GET
+  /api/health` 200 on both `prooflens-preview` and `prooflens-production`,
+  and the full `apps/web/acceptance/online.mjs` suite passes against both.
+- Legacy links checked live: standalone repo pages, their CI badges, and the
+  widget's jsdelivr CDN URL all resolve 200. (GitHub archiving does not
+  break jsdelivr/raw access to a repo's existing refs — the CDN link was
+  still replaced in `pilot-guide.md` because instructing pilot users to load
+  a live `@main` script from a soon-to-be-archived, no-longer-maintained
+  repository is not acceptable guidance regardless of current resolvability.)
+- Archive checklist (`docs/planning/phase7-archive-checklist.md`): all five
+  `IMPLEMENTATION_PLAN.md` archive-gate criteria PASS.
+- Nothing was pushed, archived, or otherwise changed externally.
+  `apps/web/worker-startup.cpuprofile`, a stray local Wrangler profiling
+  artifact from a prior `wrangler dev` run, was deleted and `*.cpuprofile`
+  added to `.gitignore` (same treatment as the existing generated-artifact
+  exclusions) so the worktree is clean.
+- A single narrow local commit
+  (`docs+chore: Phase 7 migration references and archive checklist`, exact
+  SHA reported alongside this handoff) captures the doc/gitignore changes
+  above as the pre-archive checkpoint. It was not pushed.
 
 ## Fix made during Phase 6 completion
 
@@ -140,9 +192,14 @@
 
 ## Next three tasks
 
-1. Do not start Phase 7 (migration/archive) without explicit authorization.
-2. When Phase 7 is explicitly started, reread its acceptance criteria in
-   `docs/planning/IMPLEMENTATION_PLAN.md` and preserve the Phase 5/6 trust,
-   binding, isolation, and blocking-CI guarantees.
-3. Keep the imported standalone repositories unchanged and unarchived until the
-   Phase 7 migration/archive gate is explicitly reached.
+1. Await explicit user authorization to archive
+   `ProofLens/prooflens-signer` and `ProofLens/prooflens-verify-widget` now
+   that the archive checklist passes. Do not archive without that
+   authorization, and only archive — never delete.
+2. If authorized, archive both repositories via `gh api` (`PATCH
+   repos/{owner}/{repo}` with `archived: true`) and record the action and
+   timestamp in `docs/history/phase7-migration.md` and this handoff.
+3. Update `docs/planning/SprintPlan.md` and `docs/planning/Roadmap.md` to
+   mark Phase 7 fully complete only after archiving is confirmed (or note
+   that local Phase 7 work is done and archiving remains pending
+   authorization, if the user defers it).
