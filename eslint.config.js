@@ -7,13 +7,14 @@ export default tseslint.config(
       "**/dist/**",
       "**/node_modules/**",
       "**/test-results/**",
+      "**/worker-configuration.d.ts",
       "legacy/**"
     ]
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
-    files: ["packages/**/*.{ts,tsx}", "fixtures/**/*.ts"],
+    files: ["apps/**/*.{ts,tsx}", "packages/**/*.{ts,tsx}", "fixtures/**/*.ts"],
     rules: {
       "@typescript-eslint/consistent-type-imports": "error",
       "@typescript-eslint/no-explicit-any": "error",

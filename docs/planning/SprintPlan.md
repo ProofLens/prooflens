@@ -42,5 +42,21 @@ JPEG, PNG, and WebP retain pixels and unrelated metadata; and the blocking
 format, lint, schema, TypeScript, unit, integration, CAI, browser, Python,
 build, dependency, secret, and history checks pass.
 
-Next milestone: Phase 6, minimal Cloudflare deployment. Phase 6 has not started,
-and no infrastructure has been provisioned.
+Phase 6 passed on 2026-08-29: the unified Cloudflare Worker application
+accepted by ADR 0002 (React/Vite static assets plus `/api/*` registry routes,
+named preview and production environments, one isolated D1 database per
+environment) is deployed to generated `*.workers.dev` hostnames only. Both
+databases received the tracked migration and the reviewed golden-vector seed
+independently. The full online acceptance suite passes against both
+environments, covering health/version, static demo serving, SPA fallback,
+`/api/*` routing precedence, identity/revocation/manifest lookup, conditional
+revalidation, immutable manifest caching, bounded/malformed-input handling, no
+mutation surface, revocation propagation with confirmed preview/production D1
+isolation, and Worker version rollback with concrete before/after evidence and
+intact D1 state. A conditional-GET (`If-None-Match`) bug found during
+acceptance — Cloudflare's edge weakens the Worker's strong `ETag` for
+compressed responses, which the exact-match comparison rejected — was fixed to
+use the RFC 7232 weak-comparison algorithm and redeployed to both
+environments. See `CURRENT_HANDOFF.md` for the full deployment record.
+
+Next milestone: Phase 7, migration and archive. Phase 7 has not started.

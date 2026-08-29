@@ -10,7 +10,7 @@
   "scripts": {
     "build": "corepack pnpm -r --if-present build",
     "format:check": "node scripts/check-format.mjs",
-    "lint": "eslint \"packages/**/*.{ts,tsx}\" \"fixtures/**/*.ts\" --max-warnings 0",
+    "lint": "eslint \"apps/**/*.{ts,tsx}\" \"packages/**/*.{ts,tsx}\" \"fixtures/**/*.ts\" --max-warnings 0",
     "schema:check": "node scripts/check-schemas.mjs",
     "typecheck": "tsc -b --pretty false && corepack pnpm -r --if-present typecheck:tests",
     "test": "corepack pnpm -r --if-present test",

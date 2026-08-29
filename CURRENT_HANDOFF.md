@@ -59,7 +59,65 @@
 ## In progress
 
 - No implementation is in progress.
-- Phase 5 is complete. Phase 6 has not started.
+- Phase 6 passed on 2026-08-29. The unified Cloudflare Worker application from
+  ADR 0002 (React/Vite static assets plus `/api/*` Worker routes, one D1
+  binding per environment) is deployed and verified live.
+
+## Phase 6 deployment record
+
+- Preview: `https://prooflens-preview.prooflens-web.workers.dev`
+  (D1 `prooflens-registry-preview`, id `13cf151e-dba5-4e19-90f5-58b3c5624bd5`).
+- Production: `https://prooflens-production.prooflens-web.workers.dev`
+  (D1 `prooflens-registry-production`, id `0058ebcc-397b-4d25-84af-10e0869fb385`).
+- Both are generated `*.workers.dev` hostnames only; no Pages project, R2,
+  custom domain, Access, Email Service, or auth/session surface exists.
+- Migration `migrations/0001_registry.sql` and the reviewed golden-vector seed
+  `seeds/phase6-reviewed.sql` are applied in both databases independently
+  (1 identity record, 1 manifest each), confirmed by direct remote D1 queries.
+- The full online acceptance suite (`apps/web/acceptance/online.mjs`) passes
+  against both environments: health/version, static demo serving, SPA
+  fallback, `/api/*` routing precedence over assets, identity lookup,
+  revocation lookup, digest-addressed manifest lookup, conditional
+  (`If-None-Match`) revalidation, immutable manifest caching, bounded/malformed
+  input handling (oversized/non-HTTPS/missing kid, malformed digest, 404/400),
+  method restriction (405 with `Allow` header), CORS preflight, and no
+  mutation route.
+- Revocation-propagation and preview/production D1 isolation were verified
+  directly: `acceptance/revoke-preview.sql` flipped the preview identity to
+  `revoked` and the change was visible immediately through
+  `/api/v1/identities` and `/api/v1/revocations`, while production's copy of
+  the same `kid` remained `trusted` throughout. Preview was restored with
+  `acceptance/restore-preview.sql` and re-verified.
+- Rollback was validated on the preview Worker using `wrangler rollback`:
+  rolling back to the prior version reproduced the pre-fix behavior exactly
+  (concrete evidence the rollback changed running code), D1 row counts were
+  unchanged by the rollback (1 identity, 1 manifest, confirmed by remote
+  query), and rolling forward restored the fixed version. Production was not
+  rolled back and was reverified unaffected throughout.
+- The demo page was loaded in a real browser against the live preview
+  deployment and rendered live registry status (service available,
+  environment `preview`, identity `trusted`) with no console errors.
+
+## Fix made during Phase 6 completion
+
+- `apps/web/worker/index.ts`: `If-None-Match` revalidation compared the
+  incoming header against the strong `ETag` with exact string equality.
+  Cloudflare's edge automatically weakens a strong `ETag` to `W/"..."` when it
+  compresses a JSON response for any client sending `Accept-Encoding: gzip`
+  (i.e. virtually all real clients, including Node's `fetch` and browsers;
+  `curl` only worked because it does not request compression by default). The
+  exact-match comparison therefore never matched and every conditional GET
+  fell through to 200 instead of 304. Fixed by implementing the weak
+  comparison required for `If-None-Match` per RFC 7232 §2.3.2 (a `W/` prefix
+  on either side is stripped before comparing). Verified live: `curl` masked
+  the bug; `node acceptance/online.mjs` (uses `fetch`) reproduces it before
+  the fix and passes after. Redeployed to both environments.
+- `.gitignore` / `eslint.config.js`: `apps/web/worker-configuration.d.ts` is
+  Wrangler-generated boilerplate (regenerated via `pnpm --filter @prooflens/web
+  types`) that fails the repo's zero-trailing-whitespace formatting invariant
+  and would otherwise fail lint. Added to the same generated-artifact
+  exclusions already used for `dist/`, `.wrangler/`, and `.wrangler-config/`
+  rather than hand-editing generated content.
 
 ## Known blockers
 
@@ -71,12 +129,20 @@
   the identical isolated test and full 30-test browser matrix pass outside the
   sandbox. This is an execution-environment restriction, not a product failure.
 - No blocker remains for the completed Phase 5 scope.
+- No blocker remains for the completed Phase 6 scope. `pnpm check`'s
+  `test:python` and `test:browser` legs were not re-run for this Phase 6 pass
+  (they exercise Phase 3/4 C2PA and browser-verification code untouched by the
+  Worker fix, and carry the pre-existing Python-shim and Firefox-sandbox
+  blockers above); format, lint, schema, typecheck, unit tests across all nine
+  TypeScript workspace projects including `apps/web`, build, dependency audit,
+  and Phase 0 history verification were all re-run and pass.
 - Publishing the branch or changing canonical remote state requires explicit authorization.
 
 ## Next three tasks
 
-1. Do not start Phase 6 or provision Cloudflare Pages/Worker/D1 without explicit authorization.
-2. When Phase 6 is explicitly started, reread its plan section and preserve the
-   Phase 5 trust, binding, preservation, and blocking-CI guarantees.
+1. Do not start Phase 7 (migration/archive) without explicit authorization.
+2. When Phase 7 is explicitly started, reread its acceptance criteria in
+   `docs/planning/IMPLEMENTATION_PLAN.md` and preserve the Phase 5/6 trust,
+   binding, isolation, and blocking-CI guarantees.
 3. Keep the imported standalone repositories unchanged and unarchived until the
-   later migration/archive gate is explicitly reached.
+   Phase 7 migration/archive gate is explicitly reached.

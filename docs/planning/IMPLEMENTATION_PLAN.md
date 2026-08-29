@@ -46,8 +46,7 @@ Proposed layout:
 
 ```text
 apps/
-  web/                 React signer/verifier and public demo
-  registry-worker/     Read-focused public registry Worker
+  web/                 React/Vite app plus read-focused /api registry Worker
 packages/
   claim/               ProofLens schemas, JCS, validation, golden vectors
   identity/            Creator keys, signatures, trust/revocation semantics
@@ -124,9 +123,16 @@ Infrastructure work starts only after the core acceptance suite passes locally a
 
 ### Initial Cloudflare scope
 
-- One Pages application for the React build.
-- One minimal TypeScript Worker.
-- Separate preview and production D1 databases only when deployment begins.
+- One unified Cloudflare Worker application containing the React/Vite static
+  assets and the minimal TypeScript `/api/*` registry routes. Static assets and
+  Worker code deploy as one versioned unit; `/api/*` is explicitly routed to the
+  Worker before SPA fallback.
+- Named preview and production Worker environments from the same application,
+  deployed as `prooflens-preview` and `prooflens-production`, each exposed only
+  through its generated `*.workers.dev` hostname in this phase.
+- Separate preview and production D1 databases, bound non-inheritably to the
+  corresponding Worker environments as `prooflens-registry-preview` and
+  `prooflens-registry-production`, only when deployment begins.
 - No R2 in the initial deployment. Store small canonical detached manifests in D1, or resolve immutable manifests from versioned static assets when appropriate.
 
 ### Initial D1 data
@@ -158,7 +164,10 @@ Worker implementation still uses prepared D1 statements, tracked migrations, gen
 - Online enrollment approval and certificate workflows.
 - Custom domains.
 
-Pages and Worker deployments use platform-generated hostnames until ownership and DNS configuration are confirmed. No `prooflens.org` hostname is hard-coded into schemas, trust decisions, fixtures, or architecture.
+Worker environment deployments use platform-generated `*.workers.dev`
+hostnames until ownership and DNS configuration are confirmed. No
+`prooflens.org` hostname is hard-coded into schemas, trust decisions, fixtures,
+or architecture.
 
 ## 7. Acceptance-first implementation phases
 
@@ -217,9 +226,11 @@ Required before Cloudflare provisioning:
 
 ### Phase 6 — Minimal Cloudflare deployment
 
-- Provision Pages, Worker, and preview/production D1 only.
+- Provision the unified React/Vite static-assets plus `/api/*` Worker in preview
+  and production environments, with one isolated D1 database per environment.
 - Apply migrations and populate manually reviewed public identity records and test manifests through the offline operator workflow.
-- Deploy to generated Cloudflare hostnames and run online lookup/revocation/manifest tests.
+- Deploy to generated `*.workers.dev` hostnames and run online
+  lookup/revocation/manifest tests.
 
 Exit: deployment passes health, caching, unavailable-registry, revocation propagation, rollback, and public-demo checks.
 
@@ -259,10 +270,11 @@ Development C2PA private material used by CI must be test-only, visibly labeled,
 - Canonical C2PA signer: Node SDK.
 - Browser C2PA role initially: verification only.
 - Production ProofLens C2PA CA: deferred.
-- Cloudflare initial scope: Pages + minimal Worker/D1 only.
+- Cloudflare initial scope: one unified static-assets plus `/api/*` Worker
+  application, deployed as preview and production environments with isolated D1
+  databases; no Pages project.
 - Custom domains: deferred pending confirmed ownership/configuration.
 
 ## 10. Immediate next action
 
 Do not provision infrastructure. First create a clean local checkout of `ProofLens/prooflens`, import and verify the two standalone histories, then perform a gap audit of the superseded monorepo commit. Port corrected modules phase-by-phase behind the Phase 5 acceptance gate.
-

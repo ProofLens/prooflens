@@ -6,6 +6,9 @@ __pycache__/
 # Node/web
 node_modules/
 dist/
+.wrangler/
+.wrangler-config/
+worker-configuration.d.ts
 *.tsbuildinfo
 # Data
 uploads/
