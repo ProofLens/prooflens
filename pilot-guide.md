@@ -29,7 +29,10 @@ your site:
 
 
 
-\*\*Notes:\*\* No build tools required. Remove the badge anytime by removing the `<script>` line.
+\*\*Notes:\*\* Build the verify script once from the canonical monorepo
+(`pnpm --filter @prooflens/verifier build`); no build tools are required on
+your own site after that — just host the output file and reuse it across
+pages. Remove the badge anytime by removing the `<script>` line.
 
 
 
