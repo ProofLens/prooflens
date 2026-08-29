@@ -1,0 +1,9 @@
+title = "ProofLens secret scanning"
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Cloudflare Web Analytics beacon IDs are intentionally public client-side identifiers"
+regexTarget = "line"
+regexes = ['''data-cf-beacon=.*token''']

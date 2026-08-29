@@ -33,6 +33,14 @@ and WebKit pass keyboard/focus, live-region, CORS, currentSrc, offline,
 unavailable-registry, and conflict scenarios without collapsing ProofLens and
 C2PA evidence.
 
-Active milestone: Phase 5, core acceptance gate. Phase 5 has not started.
+Phase 5 passed on 2026-08-29: newly created detached claims verify exact
+final-file SHA-256 offline; embedded ProofLens provenance verifies through C2PA
+claim/asset binding without a recursive final-file digest; creator and Generator
+Product keys are demonstrably distinct; revoked and expired identities never
+produce `trusted`; development C2PA credentials remain ecosystem-untrusted;
+JPEG, PNG, and WebP retain pixels and unrelated metadata; and the blocking
+format, lint, schema, TypeScript, unit, integration, CAI, browser, Python,
+build, dependency, secret, and history checks pass.
 
-Infrastructure provisioning is intentionally blocked until the Phase 5 core acceptance gate passes.
+Next milestone: Phase 6, minimal Cloudflare deployment. Phase 6 has not started,
+and no infrastructure has been provisioned.

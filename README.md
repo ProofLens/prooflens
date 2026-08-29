@@ -6,7 +6,7 @@
   </a>
 </p>
 
-**Add a tiny verified credit-line — click to see creator and verify file integrity.  
+**Add a tiny verified credit-line — click to see creator and verify file integrity.
 No on-image overlays. Paste two lines.**
 
 [Live demo](https://prooflens.netlify.app/demo-embed.html) •
@@ -26,7 +26,7 @@ No on-image overlays. Paste two lines.**
 - `examples/` — 2-line snippets + sample manifest
 
 **Related repos**
-- Verify widget (browser): https://github.com/ProofLens/prooflens-verify-widget  
+- Verify widget (browser): https://github.com/ProofLens/prooflens-verify-widget
 - Signer CLI (Python): https://github.com/ProofLens/prooflens-signer
 
 ## 1-minute quickstart

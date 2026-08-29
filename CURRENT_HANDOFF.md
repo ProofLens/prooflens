@@ -4,7 +4,7 @@
 
 - Worktree: `C:\Users\moizk\Music\prooflens\prooflens-canonical-phase0`
 - Branch: `phase-0-bootstrap`
-- Phase 4 completion is recorded by the current local `HEAD`.
+- Phase 5 completion is recorded by the current local `HEAD`.
 - Nothing has been pushed or changed externally.
 
 ## Finished
@@ -36,11 +36,30 @@
 - Python `prooflens-interop` verifies creator envelopes, canonicalizes JSON, and hashes assets; it does not evaluate C2PA.
 - Chromium, Firefox, and WebKit pass keyboard/focus, live-region, CORS, currentSrc, offline, unavailable-registry, and conflict scenarios.
 - `pnpm check`, `git diff --check`, and `node scripts/verify-phase0-history.mjs` pass locally.
+- Phase 5 passed locally on 2026-08-29 from Node 24.16.0, pnpm 11.19.0,
+  Python 3.12.13, and `cryptography` 50.0.0.
+- The gate now blocks on deterministic formatting invariants, ESLint, four
+  compiled JSON Schemas with positive/adversarial fixtures, strict TypeScript,
+  unit/integration tests, C2PA Node and browser CAI validation, Python
+  interoperability, builds, Chromium/Firefox/WebKit behavior, dependency
+  auditing, full-history secret scanning, and imported-history verification.
+- C2PA acceptance tests prove JPEG, PNG, and WebP preserve decoded pixels and
+  unrelated container/XMP metadata while keeping the embedded ProofLens claim
+  free of the final-file digest. Detached envelopes bind the completed signed
+  file by SHA-256 and byte length and verify offline.
+- Revoked and explicitly or temporally expired creator identities are asserted
+  never to return `trusted`; development Generator Product credentials remain
+  `valid-untrusted` even when the development root is supplied as a CAI anchor.
+- Pinned Gitleaks 8.30.1 scanned all 44 commits. The only initial findings were
+  historical public Cloudflare Web Analytics beacon IDs; `.gitleaks.toml`
+  narrowly allowlists only `data-cf-beacon` lines, after which the scan passed.
+- `.github/workflows/ci.yml` now contains blocking Phase 5 acceptance and
+  dependency/full-history secret-scanning jobs. Nothing was run remotely.
 
 ## In progress
 
 - No implementation is in progress.
-- Phase 5 is the active milestone and has not started.
+- Phase 5 is complete. Phase 6 has not started.
 
 ## Known blockers
 
@@ -48,10 +67,16 @@
 - Nested `pnpm` script invocations are not on PATH when the workspace is driven through `corepack pnpm`; root scripts call `corepack pnpm` for recursive checks. GitHub Actions installs pnpm onto PATH.
 - Chromium, Firefox, and WebKit for Phase 4 acceptance are installed locally/CI via `playwright install --with-deps chromium firefox webkit`. They are not a production C2PA trust root.
 - No blocker remains for the completed Phase 4 scope.
+- Firefox cannot spawn its Playwright tab subprocess inside the local sandbox;
+  the identical isolated test and full 30-test browser matrix pass outside the
+  sandbox. This is an execution-environment restriction, not a product failure.
+- No blocker remains for the completed Phase 5 scope.
 - Publishing the branch or changing canonical remote state requires explicit authorization.
 
 ## Next three tasks
 
-1. When explicitly starting Phase 5, run the core acceptance gate: exact detached SHA-256, non-recursive embedded C2PA binding, distinct creator/C2PA keys, revoked/expired never `trusted`, development C2PA never ecosystem-trusted, pixel/metadata preservation, and blocking CI.
-2. Keep infrastructure blocked until that Phase 5 gate passes.
-3. Do not provision Cloudflare Pages/Worker/D1 until Phase 6 is explicitly started after Phase 5.
+1. Do not start Phase 6 or provision Cloudflare Pages/Worker/D1 without explicit authorization.
+2. When Phase 6 is explicitly started, reread its plan section and preserve the
+   Phase 5 trust, binding, preservation, and blocking-CI guarantees.
+3. Keep the imported standalone repositories unchanged and unarchived until the
+   later migration/archive gate is explicitly reached.

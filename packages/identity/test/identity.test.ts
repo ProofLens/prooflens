@@ -140,9 +140,13 @@ describe("strict registry and trust semantics", () => {
       status: "revoked",
       revocation: { revokedAt: "2026-08-13T12:00:30.000Z", reason: "Creator-requested revocation" }
     };
-    expect((await verifySignedAsset(asset, envelope, revoked, new Date("2026-08-13T12:01:00.000Z"))).state).toBe("revoked");
-    expect((await verifySignedAsset(asset, envelope, { ...record, status: "expired" }, new Date("2026-08-13T12:01:00.000Z"))).state).toBe("expired");
-    expect((await verifySignedAsset(asset, envelope, record, new Date("2027-08-13T00:00:00.000Z"))).state).toBe("expired");
+    const revokedResult = await verifySignedAsset(asset, envelope, revoked, new Date("2026-08-13T12:01:00.000Z"));
+    const explicitlyExpired = await verifySignedAsset(asset, envelope, { ...record, status: "expired" }, new Date("2026-08-13T12:01:00.000Z"));
+    const elapsedValidity = await verifySignedAsset(asset, envelope, record, new Date("2027-08-13T00:00:00.000Z"));
+    expect(revokedResult.state).toBe("revoked");
+    expect(explicitlyExpired.state).toBe("expired");
+    expect(elapsedValidity.state).toBe("expired");
+    expect([revokedResult.state, explicitlyExpired.state, elapsedValidity.state]).not.toContain("trusted");
     expect((await verifySignedAsset(asset, envelope, { ...record, validFrom: "2026-08-13T12:00:00.000Z" }, new Date("2026-08-13T11:59:00.000Z"))).state)
       .toBe("valid-untrusted");
     expect((await verifySignedAsset(asset, envelope, { ...record, validFrom: "2026-08-13T12:02:00.000Z" }, new Date("2026-08-13T12:01:00.000Z"))).state)

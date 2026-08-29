@@ -52,7 +52,7 @@ export async function verifySignedAsset(
     };
   }
 
-  let signatureValid = false;
+  let signatureValid: boolean;
   try {
     signatureValid = await verifyCreatorSignature(envelope, await importRegistryPublicKey(registryRecord));
   } catch {

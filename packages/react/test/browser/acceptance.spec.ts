@@ -83,7 +83,9 @@ test("conflicting claims are invalid and not merged", async ({ page }) => {
   await fulfillRegistry(page);
   await page.goto(`${harness.origin}/react/conflict`);
   await waitForLive(page, "ProofLens: Invalid");
-  await page.locator("button.prooflens-status").click();
+  const button = page.locator("button.prooflens-status");
+  await button.focus();
+  await page.keyboard.press("Enter");
   await expect(page.locator(".prooflens-details")).toContainText(/conflict/i);
 });
 

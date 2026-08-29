@@ -50,7 +50,8 @@ describe("strict v1 claim parsing", () => {
     const value = await claim();
     expect(parseClaim(value)).toEqual(value);
     expect(() => parseClaim({ ...value, unexpected: true })).toThrow(/unexpected fields/u);
-    const { locators: _removed, ...missing } = value;
+    const missing = structuredClone(value) as Partial<ProofLensClaim>;
+    delete missing.locators;
     expect(() => parseClaim(missing)).toThrow(/missing or unexpected fields/u);
     expect(() => parseClaim({ ...value, creatorKid: "http://registry.example.test/key" })).toThrow(/HTTPS/u);
     expect(() => parseClaim({ ...value, issuedAt: "2026-08-13T12:00:00Z" })).toThrow(/milliseconds/u);

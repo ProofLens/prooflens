@@ -1,7 +1,14 @@
 import { createDetachedAssetBinding, sha256, type AssetMime, type ProofLensClaim } from "@prooflens/claim";
 import { generateFixtures, pixelDigest, type GeneratedFixture } from "@prooflens/fixtures";
 import { exportRegistryPublicJwk, generateCreatorKey, signClaim } from "@prooflens/identity";
-import { embedImageProvenance, toCompactEmbeddedClaim } from "@prooflens/metadata";
+import {
+  embedImageProvenance,
+  embedUnrelatedMarker,
+  embedXmp,
+  extractXmp,
+  readUnrelatedMarker,
+  toCompactEmbeddedClaim
+} from "@prooflens/metadata";
 import { Reader } from "@contentauth/c2pa-node";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import {
@@ -13,6 +20,11 @@ import {
   verifyC2paWithNode
 } from "../src/index.js";
 import { startWebC2paSession, type WebC2paSession } from "./web-session.js";
+
+const unrelatedXmp = `<?xpacket begin="\uFEFF" id="W5M0MpCehiHzreSzNTczkc9d"?>
+<x:xmpmeta xmlns:x="adobe:ns:meta/"><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+<rdf:Description rdf:about="" xmlns:example="https://example.test/ns/"><example:Untouched>keep me</example:Untouched></rdf:Description>
+</rdf:RDF></x:xmpmeta><?xpacket end="w"?>`;
 
 async function claimFor(asset: Awaited<ReturnType<typeof createDetachedAssetBinding>>): Promise<ProofLensClaim> {
   return {
@@ -65,11 +77,14 @@ describe("C2PA Generator Product signing", () => {
     const generated: GeneratedFixture = generateFixtures()[name];
     const mime: AssetMime = generated.mime;
     const baselinePixels = generated.pixelDigest;
-    const draft = await claimFor(await createDetachedAssetBinding(generated.bytes, generated.filename, mime));
+    const withUnrelated = embedXmp(embedUnrelatedMarker(generated.bytes, mime, "keep-me"), mime, unrelatedXmp);
+    const draft = await claimFor(await createDetachedAssetBinding(withUnrelated, generated.filename, mime));
     const compact = toCompactEmbeddedClaim(draft);
     const credentials = await createDevelopmentC2paCredentials();
-    const signed = await signWithGeneratorProduct(generated.bytes, mime, compact, credentials);
+    const signed = await signWithGeneratorProduct(withUnrelated, mime, compact, credentials);
     expect(await pixelDigest(signed)).toBe(baselinePixels);
+    expect(readUnrelatedMarker(signed, mime)).toBe("keep-me");
+    expect(extractXmp(signed, mime)).toContain("<example:Untouched>keep me</example:Untouched>");
     expect(Buffer.from(signed).includes(Buffer.from("prooflens.org"))).toBe(false);
 
     const node = await verifyC2paWithNode(signed, mime);

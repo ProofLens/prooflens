@@ -48,7 +48,7 @@ export async function startWebC2paSession(): Promise<WebC2paSession> {
   try {
     await page.waitForFunction(() => typeof (globalThis as { __c2paVerify?: unknown }).__c2paVerify === "function");
   } catch (error) {
-    throw new Error(`C2PA web harness failed to load: ${failures.join("; ") || String(error)}`);
+    throw new Error(`C2PA web harness failed to load: ${failures.join("; ") || String(error)}`, { cause: error });
   }
   return {
     async verify(bytes, mime) {
