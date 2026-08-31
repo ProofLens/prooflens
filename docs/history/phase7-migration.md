@@ -1,7 +1,7 @@
 # Phase 7 migration record
 
 Recorded 2026-08-29 from the `phase-0-bootstrap` worktree at commit
-`89b2df9ed0e29a7b972eefa3a465fb6e440a303f` (Phase 6 completion). All checks
+`6e57a087f9f5583ab2360d70629580e21458110e` (Phase 6 completion). All checks
 below were read-only against GitHub and the deployed Workers; neither
 standalone repository was changed.
 
