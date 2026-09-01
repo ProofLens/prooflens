@@ -71,3 +71,12 @@ live. All five `IMPLEMENTATION_PLAN.md` archive-gate criteria pass — see
 `docs/history/phase7-migration.md`. Archiving
 `prooflens-signer`/`prooflens-verify-widget` is authorized only after
 explicit user sign-off on that checklist; it has not been performed.
+
+PR #4 merged this Phase 7 work into canonical `main` at
+`ae73da4546d26a4f17735c8579097e65e73ea863` with `site`, `history`,
+`Phase 5 core acceptance`, and `Dependency and secret scanning` green. A
+post-merge review found the root `README.md` still advertised the old
+Netlify site and pre-Phase-0 static-integration quickstart; corrected on the
+unpushed `phase-7-public-docs` branch (see `CURRENT_HANDOFF.md`). Phase 7 is
+not yet marked complete and archiving remains unperformed pending that
+cleanup landing and separate explicit archive authorization.

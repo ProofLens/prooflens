@@ -3,9 +3,9 @@
 ## Current branch and SHA
 
 - Worktree: `C:\Users\moizk\Music\prooflens\prooflens-canonical-phase0`
-- Branch: `phase-0-bootstrap`
-- Phase 5 completion is recorded by the current local `HEAD`.
-- Nothing has been pushed or changed externally.
+- Canonical `main`: `ae73da4546d26a4f17735c8579097e65e73ea863` (PR #4 merge commit).
+- Local working branch: `phase-7-public-docs`, created from canonical `main`
+  after the merge, for the post-merge public-doc cleanup below. Not pushed.
 
 ## Finished
 
@@ -63,10 +63,18 @@
   ADR 0002 (React/Vite static assets plus `/api/*` Worker routes, one D1
   binding per environment) is deployed and verified live.
 - Phase 7 (migration and archive readiness) completed its local scope on
-  2026-08-29. See "Phase 7 migration and archive record" below. The archive
-  gate PASSES; archiving the two standalone repositories is authorized only
-  after this report is reviewed and the user gives explicit final
-  authorization for that specific external action.
+  2026-08-29 and was published as PR #4, merged into canonical `main` at
+  `ae73da4546d26a4f17735c8579097e65e73ea863` with all four required checks
+  green (`site`, `history`, `Phase 5 core acceptance`,
+  `Dependency and secret scanning`). See "Phase 7 migration and archive
+  record" and "PR #4 merge and post-merge public-doc cleanup" below. A
+  public-documentation gap was found in the merged `README.md` after PR #4
+  landed (stale Netlify links and pre-Phase-0 architecture description) and
+  is fixed on the unpushed `phase-7-public-docs` branch. Phase 7 is not
+  marked complete and neither standalone repository is archived; archiving
+  is authorized only after this cleanup is also reviewed on canonical `main`
+  and the user gives explicit final authorization for that specific
+  external action.
 
 ## Phase 6 deployment record
 
@@ -150,6 +158,44 @@ Full detail: `docs/history/phase7-migration.md` and
   SHA reported alongside this handoff) captures the doc/gitignore changes
   above as the pre-archive checkpoint. It was not pushed.
 
+## PR #4 merge and post-merge public-doc cleanup
+
+- PR #4 (`phase-0-bootstrap` → `main`) was merged with a normal merge commit
+  at `ae73da4546d26a4f17735c8579097e65e73ea863`. Post-merge GitHub Actions on
+  canonical `main` is fully green: `site`, `history`,
+  `Phase 5 core acceptance`, `Dependency and secret scanning`.
+- After the merge, a narrow final Phase 7 public-doc gap was found: the root
+  `README.md` still linked the pre-Phase-0 Netlify site
+  (`prooflens.netlify.app/demo-embed.html`, `/verify.html`, and the bare
+  site root) and its opening sections/quickstart still described the old
+  static `demo-1`-style integration (a separate unsigned `.manifest.json`
+  plus a Netlify-hosted `prooflens-verify-lite.js`) as if it were the
+  current product, instead of the ES256 creator-signing, C2PA
+  Generator-Product, and registry-trust architecture actually shipped in
+  Phases 1-6.
+- Fixed on the local, unpushed `phase-7-public-docs` branch (created from
+  canonical `main` after the merge): the opening pitch and "Why it matters"
+  now state the four separate trust facts and that C2PA does not
+  authenticate the human creator; the three Netlify links are replaced by
+  the one live production route
+  (`https://prooflens-production.prooflens-web.workers.dev`) since the app
+  has no other routes (confirmed by inspecting `apps/web/src/main.tsx`,
+  which renders a single page, and the Worker's `/api/*` routing table);
+  "What's inside" now lists the real top-level layout
+  (`apps/web/`, `packages/`, `fixtures/`, `docs/`, `legacy/`); and the
+  quickstart was replaced with a `@prooflens/cli` sequence (identity
+  generate/sign, detached verify, C2PA sign, embedded verify) that was
+  actually run end-to-end against a generated fixture before being written
+  down. The already-correct "Related repos"/replacements section from PR #4
+  was left unchanged — no defect found there. `pilot-guide.md` and
+  `docs/history/phase7-migration.md` were re-checked against the same
+  standard: no stale references found (the phase7-migration.md jsdelivr/
+  Netlify mentions are an accurately dated historical record of what was
+  checked on 2026-08-29, not current-state claims).
+- This cleanup is one narrow local commit on `phase-7-public-docs`, not yet
+  pushed, not merged. Phase 7 remains not-fully-complete and neither
+  standalone repository is archived.
+
 ## Fix made during Phase 6 completion
 
 - `apps/web/worker/index.ts`: `If-None-Match` revalidation compared the
@@ -192,14 +238,16 @@ Full detail: `docs/history/phase7-migration.md` and
 
 ## Next three tasks
 
-1. Await explicit user authorization to archive
-   `ProofLens/prooflens-signer` and `ProofLens/prooflens-verify-widget` now
-   that the archive checklist passes. Do not archive without that
-   authorization, and only archive — never delete.
-2. If authorized, archive both repositories via `gh api` (`PATCH
-   repos/{owner}/{repo}` with `archived: true`) and record the action and
-   timestamp in `docs/history/phase7-migration.md` and this handoff.
-3. Update `docs/planning/SprintPlan.md` and `docs/planning/Roadmap.md` to
-   mark Phase 7 fully complete only after archiving is confirmed (or note
-   that local Phase 7 work is done and archiving remains pending
-   authorization, if the user defers it).
+1. Await explicit authorization to push `phase-7-public-docs` and open a PR
+   into canonical `main` for the public-doc cleanup; do not push or open a
+   PR without that authorization.
+2. Once that PR merges and CI is green on `main`, re-verify the archive
+   gate against the merged public docs (not just the local branch), then
+   await separate explicit user authorization to archive
+   `ProofLens/prooflens-signer` and `ProofLens/prooflens-verify-widget`. Do
+   not archive without that authorization, and only archive — never delete.
+3. If authorized, archive both repositories via `gh api` (`PATCH
+   repos/{owner}/{repo}` with `archived: true`), record the action and
+   timestamp in `docs/history/phase7-migration.md` and this handoff, and
+   only then update `docs/planning/SprintPlan.md`/`Roadmap.md` to mark
+   Phase 7 fully complete.
