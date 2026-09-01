@@ -1,0 +1,55 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "prooflens",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-08-29",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*"]
+  },
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  },
+  "env": {
+    "preview": {
+      "workers_dev": true,
+      "preview_urls": false,
+      "vars": {
+        "ENVIRONMENT": "preview"
+      },
+      "version_metadata": {
+        "binding": "CF_VERSION_METADATA"
+      },
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "prooflens-registry-preview",
+          "database_id": "13cf151e-dba5-4e19-90f5-58b3c5624bd5",
+          "migrations_dir": "migrations"
+        }
+      ]
+    },
+    "production": {
+      "workers_dev": true,
+      "preview_urls": false,
+      "vars": {
+        "ENVIRONMENT": "production"
+      },
+      "version_metadata": {
+        "binding": "CF_VERSION_METADATA"
+      },
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "prooflens-registry-production",
+          "database_id": "0058ebcc-397b-4d25-84af-10e0869fb385",
+          "migrations_dir": "migrations"
+        }
+      ]
+    }
+  }
+}

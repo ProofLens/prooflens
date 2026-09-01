@@ -1,0 +1,33 @@
+{
+  "name": "prooflens",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.19.0",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "build": "corepack pnpm -r --if-present build",
+    "format:check": "node scripts/check-format.mjs",
+    "lint": "eslint \"apps/**/*.{ts,tsx}\" \"packages/**/*.{ts,tsx}\" \"fixtures/**/*.ts\" --max-warnings 0",
+    "schema:check": "node scripts/check-schemas.mjs",
+    "typecheck": "tsc -b --pretty false && corepack pnpm -r --if-present typecheck:tests",
+    "test": "corepack pnpm -r --if-present test",
+    "test:python": "node scripts/run-python-tests.mjs",
+    "test:browser": "corepack pnpm --filter @prooflens/react test:browser",
+    "check": "corepack pnpm format:check && corepack pnpm lint && corepack pnpm schema:check && corepack pnpm typecheck && corepack pnpm test && corepack pnpm test:python && corepack pnpm build && corepack pnpm test:browser",
+    "security:dependencies": "corepack pnpm audit --audit-level high"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@types/node": "26.1.2",
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1",
+    "eslint": "10.9.1",
+    "playwright": "1.62.1",
+    "typescript": "6.0.2",
+    "typescript-eslint": "8.68.0",
+    "vitest": "4.1.10"
+  }
+}

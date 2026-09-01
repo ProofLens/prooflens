@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:prooflens:schema:compact-embedded-claim:v1",
+  "title": "ProofLens compact embedded claim v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "claimId", "issuedAt", "creatorKid", "asset", "creator", "edits", "locators"],
+  "properties": {
+    "version": { "const": "1.0" },
+    "claimId": {
+      "type": "string",
+      "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "issuedAt": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3}Z$"
+    },
+    "creatorKid": { "type": "string", "pattern": "^https://", "maxLength": 2048 },
+    "asset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["filename", "mime"],
+      "properties": {
+        "filename": { "type": "string", "minLength": 1, "maxLength": 255, "pattern": "^[^/\\\\]+$" },
+        "mime": { "enum": ["image/jpeg", "image/png", "image/webp"] }
+      }
+    },
+    "creator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["displayName", "creditLine", "caption"],
+      "properties": {
+        "displayName": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "creditLine": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "caption": { "type": "string", "maxLength": 4000 }
+      }
+    },
+    "edits": { "type": "array" },
+    "locators": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "claim": { "type": "string", "pattern": "^https://" },
+        "c2pa": { "type": "string", "pattern": "^https://" },
+        "rights": { "type": "string", "pattern": "^https://" }
+      }
+    }
+  }
+}

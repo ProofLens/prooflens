@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:prooflens:schema:registry-identity:v1",
+  "title": "ProofLens public creator identity record v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "kid", "publicKey", "identity", "status", "validFrom", "validUntil", "revocation"],
+  "properties": {
+    "version": { "const": "1.0" },
+    "kid": { "$ref": "#/$defs/httpsUrl" },
+    "publicKey": { "$ref": "#/$defs/publicKey" },
+    "identity": { "$ref": "#/$defs/identity" },
+    "status": { "enum": ["pending", "trusted", "revoked", "expired"] },
+    "validFrom": { "$ref": "#/$defs/timestamp" },
+    "validUntil": { "$ref": "#/$defs/timestamp" },
+    "revocation": {
+      "oneOf": [
+        { "type": "null" },
+        { "$ref": "#/$defs/revocation" }
+      ]
+    }
+  },
+  "$defs": {
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3}Z$"
+    },
+    "httpsUrl": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://",
+      "maxLength": 2048
+    },
+    "publicKey": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kty", "crv", "x", "y", "alg", "use", "key_ops", "ext"],
+      "properties": {
+        "kty": { "const": "EC" },
+        "crv": { "const": "P-256" },
+        "x": { "type": "string", "pattern": "^[A-Za-z0-9_-]{43}$" },
+        "y": { "type": "string", "pattern": "^[A-Za-z0-9_-]{43}$" },
+        "alg": { "const": "ES256" },
+        "use": { "const": "sig" },
+        "key_ops": { "type": "array", "prefixItems": [{ "const": "verify" }], "items": false, "minItems": 1 },
+        "ext": { "const": true }
+      }
+    },
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["displayName", "reviewedAt"],
+      "properties": {
+        "displayName": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "reviewedAt": {
+          "oneOf": [
+            { "type": "null" },
+            { "$ref": "#/$defs/timestamp" }
+          ]
+        }
+      }
+    },
+    "revocation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["revokedAt", "reason"],
+      "properties": {
+        "revokedAt": { "$ref": "#/$defs/timestamp" },
+        "reason": { "type": "string", "minLength": 1, "maxLength": 500 }
+      }
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "name": "@prooflens/verifier",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./auto-attach": {
+      "types": "./dist/auto-attach.d.ts",
+      "import": "./dist/auto-attach.js"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc -p tsconfig.json && node scripts/build-auto-attach.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "typecheck:tests": "tsc -p tsconfig.test.json --noEmit",
+    "test": "tsc -b ../claim/tsconfig.json ../identity/tsconfig.json ../metadata/tsconfig.json ../c2pa-node/tsconfig.json ../../fixtures/tsconfig.json && vitest run"
+  },
+  "dependencies": {
+    "@contentauth/c2pa-web": "0.13.4",
+    "@prooflens/c2pa-node": "workspace:*",
+    "@prooflens/claim": "workspace:*",
+    "@prooflens/identity": "workspace:*",
+    "@prooflens/metadata": "workspace:*"
+  },
+  "devDependencies": {
+    "@prooflens/fixtures": "workspace:*",
+    "@types/node": "26.1.2",
+    "esbuild": "0.28.2",
+    "typescript": "6.0.2",
+    "vitest": "4.1.10"
+  }
+}

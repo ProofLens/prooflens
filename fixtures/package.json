@@ -1,0 +1,27 @@
+{
+  "name": "@prooflens/fixtures",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": ["dist", "examples"],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "generate": "tsc -p tsconfig.json && node dist/cli.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "typecheck:tests": "tsc -p tsconfig.test.json --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "jpeg-js": "0.4.4"
+  },
+  "devDependencies": {
+    "@types/node": "26.1.2",
+    "typescript": "6.0.2",
+    "vitest": "4.1.10"
+  }
+}

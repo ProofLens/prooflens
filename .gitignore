@@ -6,9 +6,21 @@ __pycache__/
 # Node/web
 node_modules/
 dist/
+.wrangler/
+.wrangler-config/
+worker-configuration.d.ts
+*.tsbuildinfo
+*.cpuprofile
 # Data
 uploads/
 weights/
+fixtures/generated/
+fixtures/examples/*
+!fixtures/examples/README.md
+# Playwright
+test-results/
+playwright-report/
+playwright/.cache/
 # OS
 .DS_Store
 Thumbs.db

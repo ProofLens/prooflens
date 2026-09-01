@@ -1,0 +1,41 @@
+{
+  "assetBase64": "cHJvb2ZsZW5zIGdvbGRlbiBmaXh0dXJlCg==",
+  "canonicalClaim": "{\"asset\":{\"bytes\":25,\"filename\":\"golden.jpg\",\"mime\":\"image/jpeg\",\"sha256\":\"4093a532cd54a50e68c64bb8dae578f587c6687ca98c06765dde3f35849525f4\"},\"claimId\":\"urn:uuid:1f4d4862-b36f-4ded-9cc9-4b08cb2f8b43\",\"creator\":{\"caption\":\"Cross-language vector\",\"creditLine\":\"Photo: Golden Creator\",\"displayName\":\"Golden Creator\"},\"creatorKid\":\"https://registry.example.test/v1/keys/golden\",\"edits\":[],\"issuedAt\":\"2026-08-13T12:00:00.000Z\",\"locators\":{},\"version\":\"1.0\"}",
+  "publicJwk": {
+    "kty": "EC",
+    "crv": "P-256",
+    "x": "axfR8uEsQkf4vOblY6RA8ncDfYEt6zOg9KE5RdiYwpY",
+    "y": "T-NC4v4af5uO5-tKfA-eFivOM1drMV7Oy7ZAaDe_UfU",
+    "alg": "ES256",
+    "use": "sig",
+    "key_ops": ["verify"],
+    "ext": true
+  },
+  "publicPem": "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEaxfR8uEsQkf4vOblY6RA8ncDfYEt\n6zOg9KE5RdiYwpZP40Li/hp/m47n60p8D54WK84zV2sxXs7LtkBoN79R9Q==\n-----END PUBLIC KEY-----\n",
+  "envelope": {
+    "claim": {
+      "version": "1.0",
+      "claimId": "urn:uuid:1f4d4862-b36f-4ded-9cc9-4b08cb2f8b43",
+      "issuedAt": "2026-08-13T12:00:00.000Z",
+      "creatorKid": "https://registry.example.test/v1/keys/golden",
+      "asset": {
+        "filename": "golden.jpg",
+        "mime": "image/jpeg",
+        "bytes": 25,
+        "sha256": "4093a532cd54a50e68c64bb8dae578f587c6687ca98c06765dde3f35849525f4"
+      },
+      "creator": {
+        "displayName": "Golden Creator",
+        "creditLine": "Photo: Golden Creator",
+        "caption": "Cross-language vector"
+      },
+      "edits": [],
+      "locators": {}
+    },
+    "signature": {
+      "alg": "ES256",
+      "kid": "https://registry.example.test/v1/keys/golden",
+      "value": "9NO7S8SOvgGQMcC7mruzQiBtkKEwDTfsjPigupVSZ8YibdBMdP0Xg2HTSrab2ydkVGXdo3y16aDR0G4DSjAYBg"
+    }
+  }
+}

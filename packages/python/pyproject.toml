@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "prooflens-interop"
+version = "1.0.0"
+description = "ProofLens v1 golden-vector interoperability checks"
+requires-python = ">=3.11"
+dependencies = ["cryptography>=44"]
+
+[project.scripts]
+prooflens-interop = "prooflens_interop.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

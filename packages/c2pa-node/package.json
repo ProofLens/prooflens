@@ -1,0 +1,59 @@
+{
+  "name": "@prooflens/c2pa-node",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./assertion": {
+      "types": "./dist/assertion.d.ts",
+      "import": "./dist/assertion.js"
+    },
+    "./constants": {
+      "types": "./dist/constants.d.ts",
+      "import": "./dist/constants.js"
+    },
+    "./describe": {
+      "types": "./dist/describe.d.ts",
+      "import": "./dist/describe.js"
+    },
+    "./evidence": {
+      "types": "./dist/evidence.d.ts",
+      "import": "./dist/evidence.js"
+    },
+    "./types": {
+      "types": "./dist/types.d.ts",
+      "import": "./dist/types.js"
+    }
+  },
+  "files": [
+    "dist",
+    "schemas",
+    "credentials"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "typecheck:tests": "tsc -p tsconfig.test.json --noEmit",
+    "test": "tsc -b ../claim/tsconfig.json ../identity/tsconfig.json ../metadata/tsconfig.json ../../fixtures/tsconfig.json && vitest run"
+  },
+  "dependencies": {
+    "@contentauth/c2pa-node": "0.8.3",
+    "@contentauth/c2pa-web": "0.13.4",
+    "@peculiar/x509": "2.0.0",
+    "@prooflens/claim": "workspace:*",
+    "@prooflens/metadata": "workspace:*",
+    "reflect-metadata": "0.2.2"
+  },
+  "devDependencies": {
+    "@prooflens/fixtures": "workspace:*",
+    "@prooflens/identity": "workspace:*",
+    "@types/node": "26.1.2",
+    "esbuild": "0.28.2",
+    "playwright": "1.62.1",
+    "typescript": "6.0.2",
+    "vitest": "4.1.10"
+  }
+}

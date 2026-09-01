@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ProofLens Verify — Day-2 Demo</title>
+  <style>body{font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;padding:24px}</style>
+</head>
+<body>
+  <h1>ProofLens Verify — Day-2 Demo</h1>
+  <p>Click the <strong>CR</strong> badge. The widget will compute the image's SHA-256 and compare it to the manifest.</p>
+
+  <div style="max-width:480px">
+    <img
+      src="sample.jpg"
+      alt="Sample"
+      data-manifest-url="sample.jpg.manifest.json"
+      style="width:100%;height:auto;border-radius:12px"
+    />
+  </div>
+
+  <script src="../dist/prooflens-verify.min.js"></script>
+</body></html>
