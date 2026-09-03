@@ -8,24 +8,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - name: Sanity check site files
+    - name: Validate public/legacy site layout
       shell: bash
       run: |
         set -e
-        # Accept either root or site/ layout to be robust
-        if [ -f demo-embed.html ]; then
-          echo "Found root-level pages."
-          test -f demo-embed.html
-          test -f verify.html
-        elif [ -f site/demo-embed.html ]; then
-          echo "Found site/ pages."
-          test -f site/demo-embed.html
-          test -f site/verify.html
-        else
-          echo "Could not find demo-embed.html or verify.html" >&2
-          exit 1
-        fi
-        echo "Site sanity OK."
+        # public/ is the only thing Netlify serves (see netlify.toml) and
+        # must be the retirement page pointing at the canonical production
+        # Worker, not a revived copy of the old demo-1/static-widget site.
+        test -f public/index.html
+        grep -q "prooflens-production.prooflens-web.workers.dev" public/index.html
+        # The old site is preserved for history under legacy/site/ only.
+        test -f legacy/site/demo-embed.html
+        test -f legacy/site/verify.html
+        test -f legacy/site/signer.html
+        # It must never come back live at the repo root or under Netlify's
+        # published directory.
+        for f in demo-embed.html verify.html embed.html signer.html showcase.html pricing.html success.html; do
+          if [ -f "$f" ]; then
+            echo "Legacy demo page $f must not exist at repo root" >&2
+            exit 1
+          fi
+          if [ -f "public/$f" ]; then
+            echo "Legacy demo page $f must not be published by Netlify" >&2
+            exit 1
+          fi
+        done
+        echo "Public/legacy site layout OK."
 
   history:
     runs-on: ubuntu-latest

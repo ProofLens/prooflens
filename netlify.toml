@@ -1,4 +1,18 @@
 # netlify.toml (repo root)
+#
+# Phase 7: the old static demo site under legacy/site/ is retired and is not
+# published here. Netlify now serves only public/ — a single retirement
+# page pointing visitors at the current canonical production Worker
+# (https://prooflens-production.prooflens-web.workers.dev). Any request to a
+# path that doesn't exist under public/ (e.g. the old /demo-embed.html,
+# /verify.html, /assets/prooflens-verify.min.js) falls through to that same
+# retirement page instead of a broken 404 or a page that used to generate
+# unsigned demo-1 manifests.
 [build]
   command = ""
-  publish = "."
+  publish = "public"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
