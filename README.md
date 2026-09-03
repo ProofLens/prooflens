@@ -37,11 +37,16 @@ facts — never collapsed into one verdict.
   discovery, C2PA Generator Product signing, verification, the `prooflens`
   CLI, and Python interoperability
 - `fixtures/` — deterministic JPEG/PNG/WebP generation used by tests
+- `public/` — the retired-site retirement notice Netlify actually serves
+  (`netlify.toml` publishes only this directory), pointing visitors at the
+  live production Worker above
 - `docs/` — architecture decision records, planning (roadmap, sprint plan,
   implementation plan), and history (imported-repository and migration
   records)
-- `legacy/` — complete, frozen, read-only imported histories of the former
-  `prooflens-signer` and `prooflens-verify-widget` repositories
+- `legacy/` — frozen, read-only history: `legacy/signer` and
+  `legacy/verify-widget` are the complete imported histories of the former
+  standalone repositories; `legacy/site` is the retired pre-Phase-0 static
+  demo site, preserved but no longer served
 
 **Related repos**
 
