@@ -23,3 +23,16 @@ explicit instructions, archiving `ProofLens/prooflens-signer` and
 this checklist is reported to and explicitly authorized by the user.
 Archiving is allowed; deletion is not, and no repository content, ref, or
 history is removed by archiving.
+
+## Postscript: public-doc gap found after PR #4 merge
+
+This checklist was signed off against the `phase-0-bootstrap` branch before
+it merged into canonical `main` (PR #4, `ae73da4546d26a4f17735c8579097e65e73ea863`).
+Row 2's evidence covered the "Related repos" section and legacy-repo link
+health, but the merged `README.md`'s opening description and quickstart
+still advertised the pre-Phase-0 Netlify site and static `demo-1`-style
+integration as if they were the current product. That gap is fixed on the
+unpushed `phase-7-public-docs` branch (see `CURRENT_HANDOFF.md`). Row 2
+should be treated as re-opened until that branch merges into `main` and this
+checklist is re-validated against the merged result; the other four rows are
+unaffected.

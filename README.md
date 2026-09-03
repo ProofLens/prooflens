@@ -6,24 +6,47 @@
   </a>
 </p>
 
-**Add a tiny verified credit-line — click to see creator and verify file integrity.
-No on-image overlays. Paste two lines.**
+**Portable, independently verifiable creator credit for images.** ProofLens
+reports claim binding, creator signature validity, reviewed ProofLens
+identity trust, and C2PA Content Credential validity/trust as four separate
+facts — never collapsed into one verdict.
 
-[Live demo](https://prooflens.netlify.app/demo-embed.html) •
-[Verify tool](https://prooflens.netlify.app/verify.html) •
-[Site](https://prooflens.netlify.app)
+[Live registry](https://prooflens-production.prooflens-web.workers.dev)
 
 ---
 
 ## Why it matters
-- **Credit that travels** — creators get visible attribution (caption chip) without changing editor workflow.
-- **Integrity you can click** — SHA-256 of the *exact* file; if bytes change, it fails.
-- **Zero-step for editors** — one-time header install; auto-link manifests (plugin/edge planned).
+- **Separate evidence, never merged** — ProofLens claim binding, creator
+  ES256 signature validity, reviewed/revoked/expired ProofLens identity
+  trust, and independent C2PA Content Credential validity/trust are each
+  reported on their own.
+- **C2PA does not authenticate the human creator** — the C2PA Content
+  Credential is signed by the ProofLens Generator Product, not the creator.
+  A cryptographically valid credential is `valid-untrusted` unless an
+  ecosystem independently trusts it.
+- **Exact-file integrity** — detached envelopes bind the signed file's
+  SHA-256 and byte length; embedded provenance binds through the C2PA
+  manifest/claim instead of a recursive final-file digest.
 
 ## What’s inside
-- `site/` — Netlify demo pages (caption-mode, header-only)
-- `docs/` — architecture, manifest schema, security, roadmap
-- `examples/` — 2-line snippets + sample manifest
+- `apps/web/` — the React/Vite app plus the read-focused `/api/*` registry
+  Worker, deployed to isolated preview/production Cloudflare Workers with a
+  D1-backed registry (see [`docs/adr/0002-unified-cloudflare-worker-deployment.md`](docs/adr/0002-unified-cloudflare-worker-deployment.md))
+- `packages/` — `claim`, `identity`, `metadata`, `c2pa-node`, `verifier`,
+  `react`, `cli`, `python`: creator claims, identity/trust, metadata
+  discovery, C2PA Generator Product signing, verification, the `prooflens`
+  CLI, and Python interoperability
+- `fixtures/` — deterministic JPEG/PNG/WebP generation used by tests
+- `public/` — the retired-site retirement notice Netlify actually serves
+  (`netlify.toml` publishes only this directory), pointing visitors at the
+  live production Worker above
+- `docs/` — architecture decision records, planning (roadmap, sprint plan,
+  implementation plan), and history (imported-repository and migration
+  records)
+- `legacy/` — frozen, read-only history: `legacy/signer` and
+  `legacy/verify-widget` are the complete imported histories of the former
+  standalone repositories; `legacy/site` is the retired pre-Phase-0 static
+  demo site, preserved but no longer served
 
 **Related repos**
 
@@ -58,30 +81,37 @@ Replacements in this monorepo:
   `docs/history/standalone-imports.md` and
   `docs/history/phase7-migration.md` for full migration detail.
 
-## 1-minute quickstart
-```html
-<!-- caption-mode (no overlay) -->
-<script src="https://prooflens.netlify.app/assets/prooflens-verify-lite.js"></script>
+## Quickstart
 
-<figure>
-  <img src="/path/photo.jpg"
-       data-manifest-url="/path/photo.jpg.manifest.json"
-       alt="">
-  <figcaption class="credit">Photo: Your Name</figcaption>
-</figure>
-How it works
-A small *.manifest.json stores sha256, creator, and created_at.
+From this workspace, using `@prooflens/cli` (see the CLI usage above for
+the full flag reference):
 
-The browser (WebCrypto) hashes the displayed image and compares to the manifest.
+```bash
+prooflens identity generate --out ./keys
+prooflens identity sign --key ./keys/creator.private.jwk.json --asset photo.jpg \
+  --kid https://your-registry.example/v1/keys/you --name "Your Name" \
+  --credit "Photo: Your Name" --out photo.jpg.envelope.json
 
-Match ⇒ ✓ verified; mismatch ⇒ check failed.
+# Detached: verify the creator-signed envelope against the exact original file
+prooflens verify --asset photo.jpg --envelope photo.jpg.envelope.json
 
-Roadmap
-WordPress Auto-CR (one-time install; auto-manifests on upload)
+# Embedded: add a C2PA Generator Product credential, then verify the C2PA-signed file
+prooflens c2pa sign --asset photo.jpg --claim photo.jpg.envelope.json --out photo.c2pa.jpg
+prooflens verify --asset photo.c2pa.jpg
+```
 
-Edge auto-manifest (Netlify/Cloudflare) with Link: rel="content-credentials"
+Both `verify` calls report `state: "valid-untrusted"` here because no
+registry was configured; the second also reports that C2PA authenticates
+the ProofLens Generator Product, not the human creator.
+[`packages/react`](packages/react) ships components/hooks for rendering
+this verification in the browser; the live registry linked above is the
+read-only public API these envelopes/claims resolve identities and
+manifests against.
 
-Trust dashboard + DMCA evidence bundle
+## Roadmap
 
-License
+See [`docs/planning/Roadmap.md`](docs/planning/Roadmap.md).
+
+## License
+
 MIT
